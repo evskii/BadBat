@@ -26,45 +26,47 @@ public class FPSPlayerMovement : MonoBehaviour
     [SerializeField] private Transform fpsCamera;
     private Rigidbody rigidbody;
     private FPSPlayerInputActions playerInputActions;
-    
-    
+
+    private void OnDisable() {
+        playerInputActions.Disable();
+    }
 
     private void Start() {
         //Get references
         rigidbody = GetComponent<Rigidbody>();
         fpsCamera = GetComponentInChildren<Camera>().transform;
         playerInputActions = new FPSPlayerInputActions();
-        playerInputActions.Player.Enable();
+        playerInputActions.Enable();
         
         //Initialize variables
         currentMoveSpeed = baseMoveSpeed;
     }
-    
-    //Get our directional movement input
-    
-    // public void OnMove(InputValue value) {
-    //     //Debug.Log(value.Get<Vector2>());
-    //     var rawInput = value.Get<Vector2>();
-    //     Vector3 finalInput = new Vector3(rawInput.x, 0, rawInput.y);
-    //
-    //     // rigidbody.velocity = finalInput * currentMoveSpeed;
-    //     moveVector = finalInput;
-    // }
+
+    private float rotY= 0;
 
     private void FixedUpdate() {
+        //Movement
         var rawMoveData = playerInputActions.Player.Move.ReadValue<Vector2>();
         moveVector = new Vector3(rawMoveData.x, 0, rawMoveData.y);
-        var finalMoveVector = Vector3.Scale(transform.forward, moveVector);
-        rigidbody.velocity = Vector3.Normalize(finalMoveVector * (currentMoveSpeed * Time.fixedDeltaTime));
+        var finalMoveVector = transform.TransformDirection(new Vector3(rawMoveData.x, rigidbody.velocity.y, rawMoveData.y) * currentMoveSpeed);
+        finalMoveVector = Vector3.Lerp(rigidbody.velocity, finalMoveVector, 0.25f);
+        rigidbody.velocity = finalMoveVector;
 
+        //Look
         var rawLookData = playerInputActions.Player.Look.ReadValue<Vector2>();
+        
+        rotY += rawLookData.y * (lookSpeed * Time.fixedDeltaTime);
+        rotY = Mathf.Clamp(rotY, -90f, 90f);
+        fpsCamera.rotation = Quaternion.Euler(-rotY, fpsCamera.rotation.y, fpsCamera.rotation.z);
+
         transform.Rotate(new Vector3(0, rawLookData.x, 0) * (lookSpeed * Time.fixedDeltaTime));
-        fpsCamera.transform.Rotate(new Vector3(rawLookData.y, 0, 0) * (lookSpeed * Time.fixedDeltaTime));
+        // fpsCamera.transform.Rotate(new Vector3(rawLookData.y, 0, 0) * (lookSpeed * Time.fixedDeltaTime));
+        // var lookRotation = fpsCamera.transform.rotation.eulerAngles;
+        // // fpsCamera.transform.rotation = Quaternion.Euler(lookRotation);
+        // Debug.Log(lookRotation.x);
+        
+        
+        
     }
 
-    // public void OnLook(InputValue value) {
-    //     var rawInput = value.Get<Vector2>();
-    //     transform.Rotate(new Vector3(0, rawInput.x, 0) * lookSpeed);
-    //     fpsCamera.transform.Rotate(new Vector3(rawInput.y, 0, 0) * lookSpeed);
-    // }
 }

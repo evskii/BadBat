@@ -723,7 +723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bf274a000e032e4dbc0dd7cc7df1b83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMoveSpeed: 500
+  baseMoveSpeed: 10
   sprintMultiplier: 1.5
   lookSpeed: 10
   fpsCamera: {fileID: 1918511809}
