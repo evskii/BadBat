@@ -46,9 +46,18 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Fire"",
+                    ""name"": ""FireLeft"",
                     ""type"": ""Button"",
                     ""id"": ""b0f59a77-c2ef-409f-9ec7-765d0f5b7dea"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FireRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""dd4019c1-6d22-4b29-a4b0-c9063f0380e9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -65,7 +74,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 },
                 {
                     ""name"": ""Sprint"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""95fad179-5a42-4ab8-9b53-ad12b4953d9e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -251,11 +260,11 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 {
                     ""name"": """",
                     ""id"": ""143bb1cd-cc10-4eca-a2f0-a3664166fe91"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
-                    ""action"": ""Fire"",
+                    ""action"": ""FireLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -266,40 +275,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Fire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""886e731e-7071-4ae4-95c0-e61739dad6fd"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Touch"",
-                    ""action"": ""Fire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""ee3d0cd2-254e-47a7-a8cb-bc94d9658c54"",
-                    ""path"": ""<Joystick>/trigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Fire"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8255d333-5683-4943-a58a-ccb207ff1dce"",
-                    ""path"": ""<XRController>/{PrimaryAction}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Fire"",
+                    ""action"": ""FireLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -366,6 +342,28 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f602e71-c33a-4ae7-919a-890147792c76"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""FireRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a6bd470-674d-4250-afda-596313d3e2b1"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""FireRight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -955,7 +953,8 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_FireLeft = m_Player.FindAction("FireLeft", throwIfNotFound: true);
+        m_Player_FireRight = m_Player.FindAction("FireRight", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
@@ -1032,7 +1031,8 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_FireLeft;
+    private readonly InputAction m_Player_FireRight;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Crouch;
@@ -1042,7 +1042,8 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         public PlayerActions(@FPSPlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @FireLeft => m_Wrapper.m_Player_FireLeft;
+        public InputAction @FireRight => m_Wrapper.m_Player_FireRight;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
@@ -1061,9 +1062,12 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
-                @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
+                @FireLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireLeft;
+                @FireLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireLeft;
+                @FireLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireLeft;
+                @FireRight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireRight;
+                @FireRight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireRight;
+                @FireRight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFireRight;
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
@@ -1083,9 +1087,12 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @Fire.started += instance.OnFire;
-                @Fire.performed += instance.OnFire;
-                @Fire.canceled += instance.OnFire;
+                @FireLeft.started += instance.OnFireLeft;
+                @FireLeft.performed += instance.OnFireLeft;
+                @FireLeft.canceled += instance.OnFireLeft;
+                @FireRight.started += instance.OnFireRight;
+                @FireRight.performed += instance.OnFireRight;
+                @FireRight.canceled += instance.OnFireRight;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
@@ -1253,7 +1260,8 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnFire(InputAction.CallbackContext context);
+        void OnFireLeft(InputAction.CallbackContext context);
+        void OnFireRight(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
