@@ -12,6 +12,13 @@ public class GadgetAndGizmo : MonoBehaviour
     public AbilityClass activeAbility;
     public GameObject player;
     
+    public enum Arm
+    {
+        Left,
+        Right
+    }
+    public Arm arm;
+    
     private void Start() {
         player = GetComponentInParent<FPSPlayerMovementCharacterController>().gameObject;
         
@@ -21,5 +28,20 @@ public class GadgetAndGizmo : MonoBehaviour
 
     public void Fire() {
         activeAbility.Fire();
+    }
+
+    public void Equip(string abilityName) {
+        AbilityClass toEquip = null;
+        for (int i = 0; i < availableAbilities.Count; i++) {
+            if (availableAbilities[i].abilityName == abilityName) {
+                toEquip = availableAbilities[i];
+            }
+        }
+        if (toEquip == null) {
+            Debug.Log("<color=red>Cannot find abilityName: " + abilityName + "</color>");
+        } else {
+            activeAbility = toEquip;
+            toEquip.Equip(player, gameObject);
+        }
     }
 }
