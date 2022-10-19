@@ -7,17 +7,17 @@ using UnityEngine;
 
 public class WeaponSelectButtonInfo : MonoBehaviour
 {
-    public string abilityName;
+    public AbilityClass ability;
     public GadgetAndGizmo gauntlet;
 
-    public void InitButtonInfo(string name, GadgetAndGizmo gauntlet) {
-        abilityName = name;
+    public void InitButtonInfo(AbilityClass ability, GadgetAndGizmo gauntlet) {
+        this.ability = ability;
         this.gauntlet = gauntlet;
 
-        GetComponentInChildren<TMP_Text>().text = abilityName;
+        GetComponentInChildren<TMP_Text>().text = ability.abilityName;
     }
     
     public void Equip() {
-        gauntlet.Equip(abilityName);
+        gauntlet.Equip(ability);
     }
 }

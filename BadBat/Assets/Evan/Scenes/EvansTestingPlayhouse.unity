@@ -21290,6 +21290,7 @@ MonoBehaviour:
   isSprinting: 0
   isCrouched: 0
   isSliding: 0
+  stoppingLerpPower: 5
 --- !u!143 &1571492530
 CharacterController:
   m_ObjectHideFlags: 0

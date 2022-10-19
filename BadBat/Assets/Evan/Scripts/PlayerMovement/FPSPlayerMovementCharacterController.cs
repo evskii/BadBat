@@ -50,6 +50,7 @@ namespace Evan.Scripts.PlayerMovement
            
         }
 
+        public float stoppingLerpPower;
 
         private void Start() {
             playerInputActions = GetComponent<FPSPlayerInput>().playerInputActions;
@@ -76,8 +77,14 @@ namespace Evan.Scripts.PlayerMovement
         
             //Movement
             if (!isSliding) {
-                rawMoveInput = playerInputActions.Player.Move.ReadValue<Vector2>();
-                if (Vector3.Magnitude(new Vector3(rawMoveInput.x, rawMoveInput.y, 0)) == 0) {
+                //Uses the immediate stop
+                // rawMoveInput = playerInputActions.Player.Move.ReadValue<Vector2>();
+                
+                //Use the lerped move so there is no immediate stop
+                var directInput = playerInputActions.Player.Move.ReadValue<Vector2>();
+                rawMoveInput = Vector2.Lerp(rawMoveInput, directInput, stoppingLerpPower * Time.deltaTime);
+                
+                if (Vector3.Magnitude(new Vector3(rawMoveInput.x, rawMoveInput.y, 0)) <= 0.1f) {
                     isSprinting = false;
                 }
                 currentMoveSpeed = isSprinting ? baseMoveSpeed * sprintMultiplier : baseMoveSpeed;
@@ -171,7 +178,7 @@ namespace Evan.Scripts.PlayerMovement
             } else {
                 if (context.isPressed) {
                     //Slide
-                    if (isSprinting && !isSliding) {
+                    if (isSprinting && !isSliding && isGrounded) {
                         isSliding = true;
                 
                         var inputDirection = playerInputActions.Player.Move.ReadValue<Vector2>();

@@ -39,11 +39,11 @@ public class WeaponSelectMenuController : MonoBehaviour
 		Time.timeScale = 0.1f;
 		foreach (var ability in leftGauntlet.availableAbilities) {
 			var newButton = Instantiate(button, leftGauntletTrans);
-			newButton.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(ability.abilityName, leftGauntlet);
+			newButton.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(ability, leftGauntlet);
 		}
 		foreach (var ability in rightGauntlet.availableAbilities) {
 			var newButton = Instantiate(button, rightGauntletTrans);
-			newButton.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(ability.abilityName, rightGauntlet);
+			newButton.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(ability, rightGauntlet);
 		}
 	}
 

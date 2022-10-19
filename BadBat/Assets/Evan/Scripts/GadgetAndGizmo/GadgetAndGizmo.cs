@@ -30,18 +30,8 @@ public class GadgetAndGizmo : MonoBehaviour
         activeAbility.Fire();
     }
 
-    public void Equip(string abilityName) {
-        AbilityClass toEquip = null;
-        for (int i = 0; i < availableAbilities.Count; i++) {
-            if (availableAbilities[i].abilityName == abilityName) {
-                toEquip = availableAbilities[i];
-            }
-        }
-        if (toEquip == null) {
-            Debug.Log("<color=red>Cannot find abilityName: " + abilityName + "</color>");
-        } else {
-            activeAbility = toEquip;
-            toEquip.Equip(player, gameObject);
-        }
+    public void Equip(AbilityClass ability) {
+        activeAbility = ability;
+        ability.Equip(player, gameObject);
     }
 }
