@@ -10,19 +10,20 @@ namespace Evan.Scripts.PlayerMovement
         private Camera playerCamera;
 
         [Header("Player Settings")]
-        [SerializeField] public float baseMoveSpeed;
-        [SerializeField] public float sprintMultiplier;
-        [SerializeField] public float crouchMultiplier;
+        [SerializeField] public float baseMoveSpeed = 8;
+        [SerializeField] private float stoppingLerpPower = 5;
+        [SerializeField] public float sprintMultiplier = 1.8f;
+        [SerializeField] public float crouchMultiplier = 0.8f;
         [SerializeField] private float currentMoveSpeed;
         private Vector2 rawMoveInput;
         private Vector3 velocity;
         [SerializeField] public float gravity = -9.81f;
-        [SerializeField] public float jumpForce;
-        [SerializeField] private float coyoteTime;
+        [SerializeField] public float jumpForce = 79;
+        [SerializeField] private float coyoteTime = 0.5f;
         private float lastTimeGrounded;
         private float lastTimeJumped;
         [SerializeField] private Transform groundCheck;
-        [SerializeField] private float groundDistance;
+        [SerializeField] private float groundDistance = 0.35f;
         [SerializeField] private LayerMask groundMask;
         private float currentHeight;
         [SerializeField] private Vector3 cameraOffset;
@@ -50,7 +51,7 @@ namespace Evan.Scripts.PlayerMovement
            
         }
 
-        public float stoppingLerpPower;
+        
 
         private void Start() {
             playerInputActions = GetComponent<FPSPlayerInput>().playerInputActions;

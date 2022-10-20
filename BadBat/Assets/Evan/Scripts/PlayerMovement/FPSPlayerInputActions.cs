@@ -89,6 +89,15 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SwapAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""ece7b823-3019-4381-a72a-4ca5703bafb2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -364,6 +373,28 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""FireRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61bfba34-82a8-46e2-b101-48fc0e8ea880"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SwapAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb904522-4b50-4192-892d-4fcf1dcf2ad2"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SwapAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -958,6 +989,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_SwapAbility = m_Player.FindAction("SwapAbility", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1036,6 +1068,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_SwapAbility;
     public struct PlayerActions
     {
         private @FPSPlayerInputActions m_Wrapper;
@@ -1047,6 +1080,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @SwapAbility => m_Wrapper.m_Player_SwapAbility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1077,6 +1111,9 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @SwapAbility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwapAbility;
+                @SwapAbility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwapAbility;
+                @SwapAbility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSwapAbility;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1102,6 +1139,9 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
+                @SwapAbility.started += instance.OnSwapAbility;
+                @SwapAbility.performed += instance.OnSwapAbility;
+                @SwapAbility.canceled += instance.OnSwapAbility;
             }
         }
     }
@@ -1265,6 +1305,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
+        void OnSwapAbility(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

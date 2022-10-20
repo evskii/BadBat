@@ -127,7 +127,7 @@ MonoBehaviour:
       - m_Target: {fileID: 4718327700837553181}
         m_TargetAssemblyTypeName: WeaponSelectButtonInfo, Assembly-CSharp
         m_MethodName: Equip
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d6a379bfb5abe34ab19f054115f21fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityName: 
+  ability: {fileID: 0}
   gauntlet: {fileID: 0}
 --- !u!1 &2272213592435141533
 GameObject:

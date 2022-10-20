@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Evan.Scripts.PlayerMovement;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectMenuController : MonoBehaviour
 {
@@ -31,8 +32,19 @@ public class WeaponSelectMenuController : MonoBehaviour
 		}
 	}
 
+	public void ToggleMenu() {
+		var menuStatus = weaponSelectUi.gameObject.activeSelf;
+
+		if (menuStatus) {
+			CloseMenu();
+		} else {
+			OpenMenu();
+		}
+	}
+	
 	[ContextMenu("Open Menu")]
 	public void OpenMenu() {
+		FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(false);
 		Cursor.lockState = CursorLockMode.None;
 		weaponSelectUi.gameObject.SetActive(true);
 		FindObjectOfType<FPSPlayerInput>().enabled = false;
@@ -49,9 +61,23 @@ public class WeaponSelectMenuController : MonoBehaviour
 
 	[ContextMenu("Close Menu")]
 	public void CloseMenu() {
+		//Clear Menu
+		foreach (Transform button in leftGauntletTrans) {
+			if (button.TryGetComponent(out WeaponSelectButtonInfo butt)) {
+				Destroy(butt.gameObject);
+			}
+		}
+		foreach (Transform button in rightGauntletTrans) {
+			if (button.TryGetComponent(out WeaponSelectButtonInfo butt)) {
+				Destroy(butt.gameObject);
+			}
+		}
+		
+		
 		Time.timeScale = 1f;
 		Cursor.lockState = CursorLockMode.Locked;
 		weaponSelectUi.gameObject.SetActive(false);
 		FindObjectOfType<FPSPlayerInput>().enabled = true;
+		FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(true);
 	}
 }
