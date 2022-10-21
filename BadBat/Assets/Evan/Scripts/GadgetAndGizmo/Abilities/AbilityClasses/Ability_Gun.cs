@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ability_Gun : AbilityClass
 {
@@ -12,20 +13,20 @@ public class Ability_Gun : AbilityClass
 		this.player = player;
 		this.gauntlet = gauntlet;
 	}
-	public override void Fire() {
-		RaycastHit hit;
+	public override void Fire(InputValue context) {
+		if (context.isPressed) {
+			RaycastHit hit;
+			//Debug.DrawRay(gauntlet.transform.position, gauntlet.transform.forward, Color.red, gunRange);
 		
-		
-		//Debug.DrawRay(gauntlet.transform.position, gauntlet.transform.forward, Color.red, gunRange);
-		
-		if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, gunRange)) {
-			// Debug.Log(hit.collider.gameObject.name);
-			if (hit.collider.TryGetComponent(out IDamageable damageable)) {
-				damageable.TakeDamage(gunDamage);
+			if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, gunRange)) {
+				// Debug.Log(hit.collider.gameObject.name);
+				if (hit.collider.TryGetComponent(out IDamageable damageable)) {
+					damageable.TakeDamage(gunDamage);
+				}
 			}
 		}
+		
 	}
 	public override void UnEquip() {
-		throw new System.NotImplementedException();
 	}
 }

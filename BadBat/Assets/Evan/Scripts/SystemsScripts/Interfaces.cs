@@ -13,3 +13,8 @@ public interface IDamageable
 {
 	public void TakeDamage(int amt);
 }
+
+public interface IElectrical
+{
+	public void Surge();
+}

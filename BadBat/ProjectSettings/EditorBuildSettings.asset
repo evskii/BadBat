@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Evan/Scenes/EvansTestingPlayhouse.unity
+    guid: ddc2ec28f93adbb4889e683e3ba1677c
   m_configObjects: {}

@@ -48,16 +48,16 @@ namespace Evan.Scripts.PlayerMovement
             }
         }
 
-        public void OnFireLeft() {
+        public void OnFireLeft(InputValue context) {
             if (canFireLeft) {
-                leftGauntlet.Fire();
+                leftGauntlet.Fire(context);
             }
             
         }
 
-        public void OnFireRight() {
+        public void OnFireRight(InputValue context) {
             if (canFireRight) {
-                rightGauntlet.Fire();
+                rightGauntlet.Fire(context);
             }
         }
 

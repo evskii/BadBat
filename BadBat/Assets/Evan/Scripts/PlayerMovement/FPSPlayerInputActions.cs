@@ -47,7 +47,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 },
                 {
                     ""name"": ""FireLeft"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""b0f59a77-c2ef-409f-9ec7-765d0f5b7dea"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
@@ -56,7 +56,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 },
                 {
                     ""name"": ""FireRight"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""dd4019c1-6d22-4b29-a4b0-c9063f0380e9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

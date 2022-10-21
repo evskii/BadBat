@@ -29,8 +29,8 @@ public class Projectile_EMPGrenade : MonoBehaviour
 		var itemsInRange = Physics.OverlapSphere(transform.position, blastRadius);
 		
 		foreach (var item in itemsInRange) {
-			if (item.TryGetComponent(out IDamageable damageable)) {
-				damageable.TakeDamage(damage);
+			if (item.TryGetComponent(out IElectrical electrical)) {
+				electrical.Surge();
 			}
 		}
 		Instantiate(explosionParticle, transform.position, Quaternion.identity);

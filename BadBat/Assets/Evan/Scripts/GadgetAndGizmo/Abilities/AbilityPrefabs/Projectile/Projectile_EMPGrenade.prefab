@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e28d8776630fae049a0bbbb303a15e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blastRadius: 3
+  blastRadius: 6
   damage: 10
   explosionDelay: 3
   explosionParticle: {fileID: 4357915372574885804, guid: 335d0c2ae7fdccc40844bc24a2c94d6c, type: 3}

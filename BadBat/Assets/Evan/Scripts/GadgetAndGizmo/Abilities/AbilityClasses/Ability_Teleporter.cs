@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ability_Teleporter : AbilityClass
 {
@@ -13,26 +14,34 @@ public class Ability_Teleporter : AbilityClass
 		this.gauntlet = gauntlet;
 	}
 
-	public override void Fire() {
-		
-		if (!placedTeleporter) {
-			RaycastHit hit;
+	public override void Fire(InputValue context) {
+		if (context.isPressed) {
+			if (!placedTeleporter) {
+				RaycastHit hit;
 			
-			if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, Mathf.Infinity, layerMask)) {
-				if (hit.normal.normalized == new Vector3(0, 1, 0)) { //If its a horizontal flat surface
-					placedTeleporter = Instantiate(abilityProjectile, hit.point, Quaternion.identity);
-				}
+				if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, Mathf.Infinity, layerMask)) {
+					if (hit.normal.normalized == new Vector3(0, 1, 0)) { //If its a horizontal flat surface
+						placedTeleporter = Instantiate(abilityProjectile, hit.point, Quaternion.identity);
+					}
 				
+				}
+			} else {
+				var charController = player.GetComponent<CharacterController>();
+				charController.enabled = false;
+				// player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
+				var rawPos = placedTeleporter.transform.position;
+				player.transform.position = new Vector3(rawPos.x, rawPos.y + charController.height, rawPos.z);
+				charController.enabled = true;
+				
+				var destroyMe = placedTeleporter;
+				placedTeleporter = null;
+				Destroy(destroyMe);
 			}
-		} else {
-			player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
-			var destroyMe = placedTeleporter;
-			placedTeleporter = null;
-			Destroy(destroyMe);
 		}
+		
 	}
 	public override void UnEquip() {
-		throw new System.NotImplementedException();
+		
 	}
 
 	

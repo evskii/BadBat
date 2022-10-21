@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Evan.Scripts.PlayerMovement;
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GadgetAndGizmo : MonoBehaviour
 {
@@ -26,11 +27,12 @@ public class GadgetAndGizmo : MonoBehaviour
         activeAbility.Equip(player, gameObject);
     }
 
-    public void Fire() {
-        activeAbility.Fire();
+    public void Fire(InputValue context) {
+        activeAbility.Fire(context);
     }
 
     public void Equip(AbilityClass ability) {
+        activeAbility.UnEquip();
         activeAbility = ability;
         ability.Equip(player, gameObject);
     }

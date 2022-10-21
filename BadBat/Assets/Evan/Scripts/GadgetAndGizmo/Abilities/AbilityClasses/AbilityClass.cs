@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public abstract class AbilityClass : MonoBehaviour, IAbility
+public abstract class AbilityClass : MonoBehaviour
 { 
 	public enum AbilityType
 	{
@@ -18,7 +19,7 @@ public abstract class AbilityClass : MonoBehaviour, IAbility
 
 	public abstract void Equip(GameObject player, GameObject gauntlet);
 
-	public abstract void Fire();
+	public abstract void Fire(InputValue context);
 
 	public abstract void UnEquip();
 }

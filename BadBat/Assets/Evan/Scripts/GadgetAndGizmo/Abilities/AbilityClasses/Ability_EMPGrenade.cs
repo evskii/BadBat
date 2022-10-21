@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Ability_EMPGrenade : AbilityClass
 {
@@ -14,13 +15,17 @@ public class Ability_EMPGrenade : AbilityClass
 		this.player = player; 
 		this.gauntlet = gauntlet;
 	}
-	public override void Fire() {
-		//Basic code to spawn a projectile and fire it.
-		var projectile = Instantiate(abilityProjectile, gauntlet.transform.position, Quaternion.identity);
-		var forceDir = gauntlet.transform.rotation * new Vector3(0f, 0f, projectileForce);
-		projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
+	
+	public override void Fire(InputValue context) {
+		if (context.isPressed) {
+			//Basic code to spawn a projectile and fire it.
+			var projectile = Instantiate(abilityProjectile, gauntlet.transform.position, Quaternion.identity);
+			var forceDir = gauntlet.transform.rotation * new Vector3(0f, 0f, projectileForce);
+			projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
+		}
+		
 	}
+	
 	public override void UnEquip() {
-		Debug.Log("AbilityUnEquipped");
 	}
 }
