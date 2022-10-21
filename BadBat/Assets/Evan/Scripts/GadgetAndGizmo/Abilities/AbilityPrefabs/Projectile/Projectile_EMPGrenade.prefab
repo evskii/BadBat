@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3041033113578353010}
   - component: {fileID: 3041033113578353011}
   - component: {fileID: 3041033113578353013}
-  - component: {fileID: 6652823441430773415}
+  - component: {fileID: -2839034155902103003}
   m_Layer: 0
-  m_Name: Projectile_TestGrenade
+  m_Name: Projectile_EMPGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &6652823441430773415
+--- !u!114 &-2839034155902103003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,13 +73,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3041033113578353008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48acf22155c58b4409f944596a23437d, type: 3}
+  m_Script: {fileID: 11500000, guid: e28d8776630fae049a0bbbb303a15e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   blastRadius: 3
   damage: 10
   explosionDelay: 3
-  explosionParticle: {fileID: 4357915372574885804, guid: 217daa961d4f0d14ab55e5741f0e1cb0, type: 3}
+  explosionParticle: {fileID: 4357915372574885804, guid: 335d0c2ae7fdccc40844bc24a2c94d6c, type: 3}
 --- !u!1 &3041033114616785166
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4eae41106083f514c8d92f0395837ddc, type: 2}
+  - {fileID: 2100000, guid: 2ccd6c7be1227aa4f8aefeed395023f5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
