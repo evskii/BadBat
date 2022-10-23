@@ -70,14 +70,7 @@ namespace Evan.Scripts.PlayerMovement
             playerInput.Crouch = Crouch;
             playerInput.Sprint = Sprint;
         }
-
-        private void Test(bool value) {
-            if (value) {
-                Debug.Log("Press");
-            } else {
-                Debug.Log("Release");
-            }
-        }
+        
 
         private void Update() {
             
@@ -121,7 +114,6 @@ namespace Evan.Scripts.PlayerMovement
                 currentSlideSpeedMulti = Mathf.Lerp(currentSlideSpeedMulti, .25f, slideFalloff * Time.deltaTime);
 
                 if ( currentSlideSpeedMulti <= 0.4f && isSliding) {
-                    Debug.Log("END SLIDE");
                     currentHeight = crouchPressed ? crouchHeight : normalHeight;
                     isSliding = false;
                     isCrouched = crouchPressed;
