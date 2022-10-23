@@ -16,9 +16,9 @@ public class Ability_TestGrenade : AbilityClass
 		this.gauntlet = gauntlet;
 	}
 	
-	public override void Fire(InputValue context) {
+	public override void Fire(bool pressed) {
 		//Basic code to spawn a projectile and fire it.
-		if (context.isPressed) {
+		if (pressed) {
 			var projectile = Instantiate(abilityProjectile, gauntlet.transform.position, Quaternion.identity);
 			var forceDir = gauntlet.transform.rotation * new Vector3(0f, 0f, projectileForce);
 			projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);

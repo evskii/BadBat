@@ -2,24 +2,55 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 namespace Evan.Scripts.PlayerMovement
 {
+    [DefaultExecutionOrder(-1)]
     public class FPSPlayerInput : MonoBehaviour
     {
         [HideInInspector] public FPSPlayerInputActions playerInputActions;
-        [HideInInspector] public FPSPlayerMovementCharacterController fpsPlayer;
         public GadgetAndGizmo leftGauntlet;
         public GadgetAndGizmo rightGauntlet;
-
-        public bool canJump = true;
-        public bool canCrouch = true;
-        public bool canSprint = true;
-        public bool canChangeAbility = true;
-        public bool canFireLeft = true;
-        public bool canFireRight = true;
         
         private void Awake() {
             playerInputActions = new FPSPlayerInputActions();
-            fpsPlayer = GetComponent<FPSPlayerMovementCharacterController>();
+
+            playerInputActions.Player.Jump.started += ctx => Jump(true);
+            playerInputActions.Player.Jump.canceled += ctx => Jump(false);
+
+            playerInputActions.Player.Crouch.started += ctx => Crouch(true);
+            playerInputActions.Player.Crouch.canceled += ctx => Crouch(false);
+
+            playerInputActions.Player.Sprint.started += ctx => Sprint(true);
+            playerInputActions.Player.Sprint.canceled += ctx => Sprint(false);
+
+            playerInputActions.Player.FireLeft.started += ctx => LeftFire(true);
+            playerInputActions.Player.FireLeft.canceled += ctx => LeftFire(false);
+            
+            playerInputActions.Player.FireRight.started += ctx => RightFire(true);
+            playerInputActions.Player.FireRight.canceled += ctx => RightFire(false);
+
+            // playerInputActions.Player.SwapAbility.started += ctx => SwapAbility(true);
+            // playerInputActions.Player.SwapAbility.canceled += ctx => SwapAbility(false);
         }
+
+        
+        //Method Delegates
+        public delegate void DelegateJump(bool pressed);
+        public DelegateJump Jump;
+
+        public delegate void DelegateCrouch(bool pressed);
+        public DelegateCrouch Crouch;
+
+        public delegate void DelegateSprint(bool pressed);
+        public DelegateSprint Sprint;
+
+        public delegate void DelegateLeftFire(bool pressed);
+        public DelegateLeftFire LeftFire;
+
+        public delegate void DelegateRightFire(bool pressed);
+        public DelegateRightFire RightFire;
+
+        // public delegate void DelegateSwapAbility(bool pressed);
+        // public DelegateSwapAbility SwapAbility;
+        
     
         private void OnEnable() {
             playerInputActions.Enable();
@@ -29,59 +60,12 @@ namespace Evan.Scripts.PlayerMovement
             playerInputActions.Disable();
         }
 
-        public void OnJump() {
-            if (canJump) {
-                fpsPlayer.Jump();
-            }
-        }
-
-        public void OnCrouch(InputValue context) {
-            if (canCrouch) {
-                fpsPlayer.Crouch(context);
-            }
-            
-        }
-
-        public void OnSprint(InputValue context) {
-            if (canSprint) {
-                fpsPlayer.Sprint(context);
-            }
-        }
-
-        public void OnFireLeft(InputValue context) {
-            if (canFireLeft) {
-                leftGauntlet.Fire(context);
-            }
-            
-        }
-
-        public void OnFireRight(InputValue context) {
-            if (canFireRight) {
-                rightGauntlet.Fire(context);
-            }
-        }
-
-        public void OnSwapAbility() {
-            if (canChangeAbility) {
-                FindObjectOfType<WeaponSelectMenuController>().ToggleMenu();
-            }
-            
-        }
 
         public void ToggleBasicMoves(bool enable) {
-            //Disables send message calls
-            canJump = enable;
-            canCrouch = enable;
-            canSprint = enable;
-            canFireLeft = enable;
-            canFireRight = enable;
-
-            //Disables walking and looking
-            var fpsPlayer = GetComponent<FPSPlayerMovementCharacterController>();
             if (enable) {
-                fpsPlayer.playerInputActions.Enable();
+                playerInputActions.Player.Enable();
             } else {
-                fpsPlayer.playerInputActions.Disable();
+                playerInputActions.Player.Disable();
             }
         }
     }

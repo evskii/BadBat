@@ -18,8 +18,8 @@ public class Ability_ElectricalCables : AbilityClass
         this.gauntlet = gauntlet;
     }
     
-    public override void Fire(InputValue context) {
-        if (context.isPressed) {
+    public override void Fire(bool pressed) {
+        if (pressed) {
             RaycastHit hit;
 		
             if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, maxLength)) {

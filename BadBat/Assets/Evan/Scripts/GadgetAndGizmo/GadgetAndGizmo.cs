@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 using Evan.Scripts.PlayerMovement;
 
+using UnityEditor.Build.Player;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,7 +14,7 @@ public class GadgetAndGizmo : MonoBehaviour
     public List<AbilityClass> availableAbilities = new List<AbilityClass>();
     public AbilityClass activeAbility;
     public GameObject player;
-    
+    private FPSPlayerInput playerInput;
     public enum Arm
     {
         Left,
@@ -21,14 +23,24 @@ public class GadgetAndGizmo : MonoBehaviour
     public Arm arm;
     
     private void Start() {
+        playerInput = GetComponentInParent<FPSPlayerInput>();
+        Debug.Log(arm);
+        if (arm == Arm.Left) {
+            playerInput.LeftFire = Fire;
+        } else {
+            playerInput.RightFire = Fire;
+        }
+        
         player = GetComponentInParent<FPSPlayerMovementCharacterController>().gameObject;
         
         activeAbility = availableAbilities[0];
         activeAbility.Equip(player, gameObject);
+        
+        
     }
 
-    public void Fire(InputValue context) {
-        activeAbility.Fire(context);
+    public void Fire(bool pressed) {
+        activeAbility.Fire(pressed);
     }
 
     public void Equip(AbilityClass ability) {

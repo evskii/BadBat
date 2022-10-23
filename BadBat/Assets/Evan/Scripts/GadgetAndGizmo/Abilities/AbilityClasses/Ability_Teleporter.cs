@@ -14,8 +14,8 @@ public class Ability_Teleporter : AbilityClass
 		this.gauntlet = gauntlet;
 	}
 
-	public override void Fire(InputValue context) {
-		if (context.isPressed) {
+	public override void Fire(bool pressed) {
+		if (pressed) {
 			if (!placedTeleporter) {
 				RaycastHit hit;
 			

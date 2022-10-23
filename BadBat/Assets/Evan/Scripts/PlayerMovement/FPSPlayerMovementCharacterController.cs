@@ -6,6 +6,7 @@ namespace Evan.Scripts.PlayerMovement
     public class FPSPlayerMovementCharacterController : MonoBehaviour
     {
         public FPSPlayerInputActions playerInputActions;
+        private FPSPlayerInput playerInput;
         private CharacterController characterController;
         private Camera playerCamera;
 
@@ -62,6 +63,20 @@ namespace Evan.Scripts.PlayerMovement
             currentHeight = normalHeight;
             characterController.height = normalHeight;
             lastTimeJumped = 0;
+
+            //Assigning input delegates
+            playerInput = GetComponent<FPSPlayerInput>();
+            playerInput.Jump = Jump;
+            playerInput.Crouch = Crouch;
+            playerInput.Sprint = Sprint;
+        }
+
+        private void Test(bool value) {
+            if (value) {
+                Debug.Log("Press");
+            } else {
+                Debug.Log("Release");
+            }
         }
 
         private void Update() {
@@ -124,22 +139,24 @@ namespace Evan.Scripts.PlayerMovement
             playerCamera.transform.localPosition = new Vector3(0f, characterController.center.y + characterController.height / 2, 0f) - cameraOffset;
         }
 
-        public void Jump() {
-            if ((isGrounded || Time.time < lastTimeGrounded + coyoteTime) && Time.time > lastTimeJumped + coyoteTime) {
-                var tempJumpForce = jumpForce;
+        public void Jump(bool pressed) {
+            if (pressed) {
+                if ((isGrounded || Time.time < lastTimeGrounded + coyoteTime) && Time.time > lastTimeJumped + coyoteTime) {
+                    var tempJumpForce = jumpForce;
             
-                if (isSliding) {
-                    SlideCancel();
-                    tempJumpForce *= slideJumpMulti;
-                }
+                    if (isSliding) {
+                        SlideCancel();
+                        tempJumpForce *= slideJumpMulti;
+                    }
             
-                velocity.y = Mathf.Sqrt(tempJumpForce + -2f * gravity);
+                    velocity.y = Mathf.Sqrt(tempJumpForce + -2f * gravity);
 
-                lastTimeJumped = Time.time;
+                    lastTimeJumped = Time.time;
+                }
             }
         }
 
-        public void Sprint(InputValue context) {
+        public void Sprint(bool pressed) {
             if (!isSliding) {
                 if (isCrouched) {
                     //Cancel Crouch
@@ -147,9 +164,9 @@ namespace Evan.Scripts.PlayerMovement
                 }
             
                 if (!toggleSprint) {
-                    isSprinting = context.isPressed;
+                    isSprinting = pressed;
                 } else {
-                    if (context.isPressed) {
+                    if (pressed) {
                         isSprinting = !isSprinting;
                     }
                 
@@ -158,15 +175,15 @@ namespace Evan.Scripts.PlayerMovement
         }
 
         private bool crouchPressed = false;
-        public void Crouch(InputValue context) {
-            crouchPressed = context.isPressed;
+        public void Crouch(bool pressed) {
+            crouchPressed = pressed;
 
             //Basic Crouch
             if (!isSliding && !isSprinting) {
                 if (!toggleCrouch) {
-                    isCrouched = context.isPressed;
+                    isCrouched = pressed;
                 } else {
-                    if (context.isPressed) {
+                    if (pressed) {
                         isCrouched = !isCrouched;
                     }
                 }
@@ -177,7 +194,7 @@ namespace Evan.Scripts.PlayerMovement
                     currentHeight = normalHeight;
                 }
             } else {
-                if (context.isPressed) {
+                if (pressed) {
                     //Slide
                     if (isSprinting && !isSliding && isGrounded) {
                         isSliding = true;

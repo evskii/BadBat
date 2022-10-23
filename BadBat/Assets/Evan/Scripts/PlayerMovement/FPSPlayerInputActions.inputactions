@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "FireLeft",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "b0f59a77-c2ef-409f-9ec7-765d0f5b7dea",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "FireRight",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "dd4019c1-6d22-4b29-a4b0-c9063f0380e9",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "Sprint",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "95fad179-5a42-4ab8-9b53-ad12b4953d9e",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -61,17 +61,8 @@
                 },
                 {
                     "name": "Crouch",
-                    "type": "PassThrough",
-                    "id": "675d36fe-183f-4880-86d7-28a8205f075d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SwapAbility",
                     "type": "Button",
-                    "id": "ece7b823-3019-4381-a72a-4ca5703bafb2",
+                    "id": "675d36fe-183f-4880-86d7-28a8205f075d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -353,28 +344,6 @@
                     "action": "FireRight",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "61bfba34-82a8-46e2-b101-48fc0e8ea880",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SwapAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "eb904522-4b50-4192-892d-4fcf1dcf2ad2",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapAbility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -387,6 +356,15 @@
                     "type": "PassThrough",
                     "id": "a4ca4c3a-0094-4c2a-bbd6-4a4f31daf46c",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SwapAbility",
+                    "type": "Button",
+                    "id": "fa886fbd-4b2b-4705-b60a-981c76e2e890",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -889,6 +867,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ebcbd0de-41d0-4500-8ca7-c2f937641dbf",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SwapAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fde57c73-11d5-4022-b90b-a8f75faec9af",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SwapAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -13,8 +13,8 @@ public class Ability_Gun : AbilityClass
 		this.player = player;
 		this.gauntlet = gauntlet;
 	}
-	public override void Fire(InputValue context) {
-		if (context.isPressed) {
+	public override void Fire(bool pressed) {
+		if (pressed) {
 			RaycastHit hit;
 			//Debug.DrawRay(gauntlet.transform.position, gauntlet.transform.forward, Color.red, gunRange);
 		

@@ -9,6 +9,23 @@ using UnityEngine.UI;
 
 public class WeaponSelectMenuController : MonoBehaviour
 {
+	[HideInInspector] public FPSPlayerInputActions uiInputActions;
+        
+	private void Awake() {
+		uiInputActions = new FPSPlayerInputActions();
+		uiInputActions.UI.SwapAbility.started += ctx => ToggleMenu();
+	}
+	
+	private void OnEnable() {
+		uiInputActions.UI.Enable();
+	}
+
+	private void OnDisable() {
+		uiInputActions.UI.Disable();
+	}
+	
+	
+	
 	public GameObject button;
 
 	public Transform weaponSelectUi;
@@ -20,6 +37,7 @@ public class WeaponSelectMenuController : MonoBehaviour
 	private GadgetAndGizmo rightGauntlet;
 
 	private void Start() {
+		
 		var gauntlets = FindObjectsOfType<GadgetAndGizmo>();
 		leftGauntlet = gauntlets[0].arm == GadgetAndGizmo.Arm.Left ? gauntlets[0] : gauntlets[1];
 		rightGauntlet = gauntlets[0].arm == GadgetAndGizmo.Arm.Right ? gauntlets[0] : gauntlets[1];

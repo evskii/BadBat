@@ -19,7 +19,7 @@ public abstract class AbilityClass : MonoBehaviour
 
 	public abstract void Equip(GameObject player, GameObject gauntlet);
 
-	public abstract void Fire(InputValue context);
+	public abstract void Fire(bool pressed);
 
 	public abstract void UnEquip();
 }
