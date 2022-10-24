@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Evan.Scripts.PlayerMovement
@@ -219,5 +221,22 @@ namespace Evan.Scripts.PlayerMovement
             Gizmos.color = new Color(1, 0, 0, 0.25f);
             Gizmos.DrawSphere(groundCheck.position, groundDistance);
         }
+        
+        //World Effects
+        private void OnTriggerEnter(Collider other) {
+            if (other.CompareTag("Ice")) {
+                stoppingLerpPower = 1;
+                baseMoveSpeed = 12;
+            }
+        }
+
+        private void OnTriggerExit(Collider other) {
+            if (other.CompareTag("Ice")) {
+                stoppingLerpPower = 5;
+                baseMoveSpeed = 8;
+            }
+        }
+
+
     }
 }
