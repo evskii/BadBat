@@ -15,6 +15,7 @@ public class Ability_Teleporter : AbilityClass
 	}
 
 	public override void Fire(bool pressed) {
+		Debug.Log(pressed);
 		if (pressed) {
 			if (!placedTeleporter) {
 				RaycastHit hit;
