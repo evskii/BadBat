@@ -24,7 +24,10 @@ public class Ability_TestGrenade : AbilityClass
 			projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
 		}
 	}
-	
+	public override void AbilityUpdate() {
+		//Not Used
+	}
+
 	public override void UnEquip() {
 	}
 }

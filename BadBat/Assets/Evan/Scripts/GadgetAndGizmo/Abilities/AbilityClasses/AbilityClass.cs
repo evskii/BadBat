@@ -21,5 +21,7 @@ public abstract class AbilityClass : MonoBehaviour
 
 	public abstract void Fire(bool pressed);
 
+	public abstract void AbilityUpdate();
+
 	public abstract void UnEquip();
 }

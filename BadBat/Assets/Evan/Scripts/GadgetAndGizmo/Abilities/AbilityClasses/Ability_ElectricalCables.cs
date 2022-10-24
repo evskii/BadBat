@@ -35,6 +35,10 @@ public class Ability_ElectricalCables : AbilityClass
         
     }
     
+    public override void AbilityUpdate() {
+        //Not Used
+    }
+    
     public override void UnEquip() {
         if (endPointTransform != null) {
             Destroy(endPointTransform);

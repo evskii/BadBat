@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using Evan.Scripts.PlayerMovement;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class WeaponSelectMenuController : MonoBehaviour
 {
 	[HideInInspector] public FPSPlayerInputActions uiInputActions;
+	[SerializeField] private EventSystem eventSystem;
         
 	private void Awake() {
 		uiInputActions = new FPSPlayerInputActions();
@@ -75,6 +77,10 @@ public class WeaponSelectMenuController : MonoBehaviour
 			var newButton = Instantiate(button, rightGauntletTrans);
 			newButton.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(ability, rightGauntlet);
 		}
+
+		var firstButton = leftGauntletTrans.GetComponentInChildren<WeaponSelectButtonInfo>().gameObject;
+		eventSystem.firstSelectedGameObject = firstButton;
+		firstButton.GetComponent<Button>().Select();
 	}
 
 	[ContextMenu("Close Menu")]
@@ -95,6 +101,7 @@ public class WeaponSelectMenuController : MonoBehaviour
 		Time.timeScale = 1f;
 		Cursor.lockState = CursorLockMode.Locked;
 		weaponSelectUi.gameObject.SetActive(false);
+		eventSystem.firstSelectedGameObject = null;
 		FindObjectOfType<FPSPlayerInput>().enabled = true;
 		FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(true);
 	}

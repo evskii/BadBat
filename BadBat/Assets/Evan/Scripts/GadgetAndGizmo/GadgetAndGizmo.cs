@@ -8,6 +8,7 @@ using UnityEditor.Build.Player;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 
 public class GadgetAndGizmo : MonoBehaviour
 {
@@ -37,6 +38,12 @@ public class GadgetAndGizmo : MonoBehaviour
         activeAbility.Equip(player, gameObject);
         
         
+    }
+
+    private void Update() {
+        if (activeAbility) {
+            activeAbility.AbilityUpdate(); //Calls the update inside of the abolities [Most dont actually use this]
+        }
     }
 
     public void Fire(bool pressed) {

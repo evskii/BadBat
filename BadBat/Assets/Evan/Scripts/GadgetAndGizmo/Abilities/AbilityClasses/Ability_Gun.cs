@@ -27,6 +27,11 @@ public class Ability_Gun : AbilityClass
 		}
 		
 	}
+	
+	public override void AbilityUpdate() {
+		//Not Used
+	}
+	
 	public override void UnEquip() {
 	}
 }

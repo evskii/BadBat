@@ -9,24 +9,32 @@ public class Ability_Teleporter : AbilityClass
 	public GameObject placedTeleporter;
 	public LayerMask layerMask;
 
+	private bool visualisationMode = false;
+	
+
 	public override void Equip(GameObject player, GameObject gauntlet) {
 		this.player = player; 
 		this.gauntlet = gauntlet;
 	}
 
 	public override void Fire(bool pressed) {
-		Debug.Log(pressed);
-		if (pressed) {
-			if (!placedTeleporter) {
+		visualisationMode = pressed && !placedTeleporter;
+		
+		if (!placedTeleporter) {
+			if (!visualisationMode) {
 				RaycastHit hit;
 			
 				if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, Mathf.Infinity, layerMask)) {
 					if (hit.normal.normalized == new Vector3(0, 1, 0)) { //If its a horizontal flat surface
 						placedTeleporter = Instantiate(abilityProjectile, hit.point, Quaternion.identity);
 					}
-				
+					if (visualizationTeleporter != null) {
+						Destroy(visualizationTeleporter);
+					}
 				}
-			} else {
+			}
+		} else {
+			if (pressed) {
 				var charController = player.GetComponent<CharacterController>();
 				charController.enabled = false;
 				// player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
@@ -40,7 +48,38 @@ public class Ability_Teleporter : AbilityClass
 			}
 		}
 		
+		
+		// if (pressed) {
+		// 	if (!placedTeleporter) {
+		// 		
+		// 	} else {
+		// 		
+		// 	}
+		// }
+		
 	}
+
+	private GameObject visualizationTeleporter;
+	
+	public override void AbilityUpdate() {
+		//Not Used
+		if (visualisationMode) {
+			RaycastHit teleporterPoint;
+			
+			if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out teleporterPoint, Mathf.Infinity, layerMask)) {
+				if (visualizationTeleporter != null) {
+					visualizationTeleporter.transform.position = teleporterPoint.point;
+				} else {
+					visualizationTeleporter = Instantiate(abilityProjectile, teleporterPoint.point, Quaternion.identity);
+				}
+			}
+		} else {
+			if (visualizationTeleporter != null) {
+				Destroy(visualizationTeleporter);
+			}
+		}
+	} 
+	
 	public override void UnEquip() {
 		
 	}

@@ -26,6 +26,10 @@ public class Ability_EMPGrenade : AbilityClass
 		
 	}
 	
+	public override void AbilityUpdate() {
+		//Not Used
+	}
+	
 	public override void UnEquip() {
 	}
 }

@@ -25,6 +25,10 @@ public class Ability_ConcussionGrenade : AbilityClass
 		}
 	}
 	
+	public override void AbilityUpdate() {
+		//Not Used
+	}
+	
 	public override void UnEquip() {
 	}
 }
