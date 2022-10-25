@@ -34,29 +34,20 @@ public class Ability_Teleporter : AbilityClass
 				}
 			}
 		} else {
-			if (pressed) {
+			if (!pressed) {
 				var charController = player.GetComponent<CharacterController>();
 				charController.enabled = false;
 				// player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
 				var rawPos = placedTeleporter.transform.position;
 				player.transform.position = new Vector3(rawPos.x, rawPos.y + charController.height, rawPos.z);
 				charController.enabled = true;
-				
+
 				var destroyMe = placedTeleporter;
 				placedTeleporter = null;
 				Destroy(destroyMe);
 			}
 		}
-		
-		
-		// if (pressed) {
-		// 	if (!placedTeleporter) {
-		// 		
-		// 	} else {
-		// 		
-		// 	}
-		// }
-		
+
 	}
 
 	private GameObject visualizationTeleporter;
@@ -66,12 +57,20 @@ public class Ability_Teleporter : AbilityClass
 		if (visualisationMode) {
 			RaycastHit teleporterPoint;
 			
+			//Raycast to where we are looking and spwan teleporter visualization here
 			if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out teleporterPoint, Mathf.Infinity, layerMask)) {
 				if (visualizationTeleporter != null) {
 					visualizationTeleporter.transform.position = teleporterPoint.point;
 				} else {
 					visualizationTeleporter = Instantiate(abilityProjectile, teleporterPoint.point, Quaternion.identity);
 				}
+			}
+			
+			//Control the colour to show if it can be placed or not
+			if (teleporterPoint.normal.normalized == new Vector3(0, 1, 0)) { //If its a horizontal flat surface
+				visualizationTeleporter.GetComponentInChildren<ParticleSystem>().startColor = Color.green;
+			} else {
+				visualizationTeleporter.GetComponentInChildren<ParticleSystem>().startColor = Color.red;
 			}
 		} else {
 			if (visualizationTeleporter != null) {
