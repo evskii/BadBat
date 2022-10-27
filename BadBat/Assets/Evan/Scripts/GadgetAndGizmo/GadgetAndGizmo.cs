@@ -25,7 +25,7 @@ public class GadgetAndGizmo : MonoBehaviour
     
     private void Start() {
         playerInput = GetComponentInParent<FPSPlayerInput>();
-        Debug.Log(arm);
+        // Debug.Log(arm);
         if (arm == Arm.Left) {
             playerInput.LeftFire = Fire;
         } else {

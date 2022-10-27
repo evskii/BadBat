@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Molotov Grenade
   abilityType: 1
-  abilityProjectile: {fileID: 3041033113578353008, guid: 476ccf4a2eae44f4fb8eb546f3936a97, type: 3}
+  abilityProjectile: {fileID: 1730562232534037640, guid: fdf99c0dd2398df42addda696cf1c585, type: 3}
   player: {fileID: 0}
   gauntlet: {fileID: 0}
   projectileForce: 15

@@ -18,27 +18,37 @@ public class Damageable_Barrel : MonoBehaviour, IDamageable
 	}
 
 	private IEnumerator DelayDestroy() {
+		GetComponent<Collider>().enabled = false;
 		yield return new WaitForSeconds(.05f);
 		Destroy();
 	}
 
 	private void Destroy() {
 		Instantiate(explosionParticle, transform.position, Quaternion.identity);
-
-		GetComponent<Collider>().enabled = false;
 		
 		var itemsInRange = Physics.OverlapSphere(transform.position, blastRadius);
 		
 		foreach (var item in itemsInRange) {
 			if (item.TryGetComponent(out IDamageable damageable)) {
-				if (item.gameObject != this.gameObject) {
+				if (item.gameObject != this.gameObject && item.gameObject.activeSelf) {
 					damageable.TakeDamage(10);
 				}
 				
 			}
 		}
-		
+
 		Destroy(gameObject);
+		
+	}
+
+	private IEnumerator DisposeGameObject() {
+		gameObject.SetActive(false);
+		yield return new WaitForSeconds(0.5f);
+		Destroy(gameObject);
+	}
+
+	private void OnDestroy() {
+		StopAllCoroutines();
 	}
 
 	private void OnDrawGizmos() {
