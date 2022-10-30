@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using UnityEngine;
+using UnityEngine.UIElements;
 
 using Color = UnityEngine.Color;
 
@@ -12,63 +13,101 @@ public class Ability_BreachCharge : AbilityClass
     public float placementRange;
     public float deployableThickness;
 
-    private Vector3 hitPoint;
-    private Vector3 lookbackPoint;
+    public Color positiveColor;
+    private Material positiveMaterial;
+    public Color negativeColor;
+    private Material negativeMaterial;
+
+    private GameObject placedBreach;
+    private GameObject visualizationBreach;
+    
+    private bool visualizationMode;
 
     public override void Equip(GameObject player, GameObject gauntlet) {
         this.player = player;
         this.gauntlet = gauntlet;
+
+        positiveMaterial = new Material(Shader.Find("Specular"));
+        positiveMaterial.color = positiveColor;
+
+        negativeMaterial = new Material(Shader.Find("Specular"));
+        negativeMaterial.color = negativeColor;
     }
     public override void Fire(bool pressed) {
-        if (pressed) {
+        if (!placedBreach) {
+            if (!pressed) { //Release
+                visualizationMode = false;
+                Destroy(visualizationBreach);
+                
+                RaycastHit hit;
+                if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
+                    //Where we point on the wall to fire
+                    var placementPoint = hit.point;
+                    var hitPoint = placementPoint;
+                
+                    //We invert the normal of this point to make it face backwards
+                    var placementNormal = hit.normal.normalized;
+                    placementNormal = Vector3.Scale(placementNormal, new Vector3(-1, -1, -1));
+                    var placementVector = Vector3.Scale(placementNormal, new Vector3(deployableThickness, deployableThickness, deployableThickness));
+                
+                    //We get a point passed the wall that allows us to look backwards at the wall
+                    var lookbackPos = placementPoint + placementVector;
+                    var lookbackPoint = lookbackPos;
+
+                    //We run a raycast from the new position back to the wall to find the wall [that is the same as the one it originally hit]
+                    RaycastHit placementHit;
+                    if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness)) {
+                        if (placementHit.collider == hit.collider) {
+                            placedBreach = Instantiate(abilityProjectile, placementHit.point, Quaternion.LookRotation(placementHit.normal.normalized), null);
+                        }
+                    }
+                }
+            } else { //Press
+                visualizationMode = true;
+            }
+        }
+
+    }
+
+    public override void AbilityUpdate() {
+        if (visualizationMode) {
+            if (!visualizationBreach) {
+                visualizationBreach = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                visualizationBreach.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+                visualizationBreach.GetComponent<Collider>().enabled = false;
+            }
+            
+            
             RaycastHit hit;
-            //Debug.DrawRay(gauntlet.transform.position, gauntlet.transform.forward, Color.red, gunRange);
-		
             if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
                 //Where we point on the wall to fire
                 var placementPoint = hit.point;
-                hitPoint = placementPoint;
+                var hitPoint = placementPoint;
                 
                 //We invert the normal of this point to make it face backwards
                 var placementNormal = hit.normal.normalized;
                 placementNormal = Vector3.Scale(placementNormal, new Vector3(-1, -1, -1));
                 var placementVector = Vector3.Scale(placementNormal, new Vector3(deployableThickness, deployableThickness, deployableThickness));
                 
-                //We get a point passed the wall that allows us to look backwards
+                //We get a point passed the wall that allows us to look backwards at the wall
                 var lookbackPos = placementPoint + placementVector;
-                lookbackPoint = lookbackPos;
+                var lookbackPoint = lookbackPos;
 
-                // var hitTrans = new GameObject();
-                // hitTrans.transform.position = placementPoint;
-                // hitTrans.name = "Hit Trans";
-                //
-                // var newTrans = new GameObject();
-                // newTrans.transform.position = lookbackPos;
-                // newTrans.name = "Lookback Trans";
+                visualizationBreach.transform.position = hit.point;
+                visualizationBreach.transform.rotation = Quaternion.LookRotation(hit.normal.normalized);
 
+                //We run a raycast from the new position back to the wall to find the wall [that is the same as the one it originally hit]
                 RaycastHit placementHit;
                 if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness)) {
-                    if (placementHit.collider == hit.collider) {
-                        Instantiate(abilityProjectile, placementHit.point, Quaternion.LookRotation(placementHit.normal.normalized), null);
-                    }
+                    visualizationBreach.GetComponent<Renderer>().material = placementHit.collider == hit.collider ? positiveMaterial : negativeMaterial;
+                } else {
+                    visualizationBreach.GetComponent<Renderer>().material = negativeMaterial;
                 }
             }
         }
-		
-    }
-	
-    public override void AbilityUpdate() {
-        //Not Used
     }
 	
     public override void UnEquip() {
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(hitPoint, 0.25f);
-        
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(lookbackPoint, 0.25f);
-    }
 }
