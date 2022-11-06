@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponSelectButtonInfo : MonoBehaviour
 {
@@ -14,10 +15,23 @@ public class WeaponSelectButtonInfo : MonoBehaviour
         this.ability = ability;
         this.gauntlet = gauntlet;
 
-        GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+        var textBox = GetComponentInChildren<TMP_Text>();
+        textBox.text = ability.abilityName;
+
+        //Find the mid point of the curve so we can place the text in middle
+        // var zRotMin = transform.eulerAngles.z;
+        // var zRotMax = Map(GetComponent<Image>().fillAmount, 0, 1, 0, 360);
+        // var zRotFinal = (zRotMax - zRotMin) / 2;
+        
+        textBox.transform.localRotation = Quaternion.Euler(0,0, -transform.eulerAngles.z);
     }
     
     public void Equip() {
+        Debug.Log("EQUIP HIT");
         gauntlet.Equip(ability);
+    }
+    
+    private float Map(float x, float a, float b, float c, float d) {
+        return (x - a) / (b - a) * (d - c) + c;
     }
 }

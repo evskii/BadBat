@@ -420,7 +420,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 },
                 {
                     ""name"": ""Click"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""693e4d33-ee5b-4feb-b170-f03c35ab266e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

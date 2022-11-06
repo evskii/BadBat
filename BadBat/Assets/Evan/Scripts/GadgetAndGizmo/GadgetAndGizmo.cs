@@ -3,12 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using Evan.Scripts.PlayerMovement;
-
-using UnityEditor.Build.Player;
-
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.PlayerLoop;
 
 public class GadgetAndGizmo : MonoBehaviour
 {
