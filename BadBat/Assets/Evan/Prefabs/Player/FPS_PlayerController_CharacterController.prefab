@@ -121,6 +121,7 @@ MonoBehaviour:
   - {fileID: 2402290323484632056, guid: bd8323ea25f5a2b42bd3c7771c26bd17, type: 3}
   - {fileID: -2527149246537059265, guid: b3366781c3e1c044fa4eedefd7eaefb5, type: 3}
   - {fileID: 2703940435398369992, guid: 195e6dfaf97051240b669e03bf56ddb0, type: 3}
+  - {fileID: -1781965790355104479, guid: 4c4158efa0fc93847868b069a535e3eb, type: 3}
   activeAbility: {fileID: 0}
   player: {fileID: 0}
   arm: 1
@@ -398,7 +399,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6114657004951445377}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
   m_BackGroundColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 0}
@@ -796,6 +797,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.5199585, y: 1.2600708}
+  m_AnchoredPosition: {x: 2.5200195, y: 1.2600098}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
