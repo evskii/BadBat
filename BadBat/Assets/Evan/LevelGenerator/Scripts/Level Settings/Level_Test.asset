@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28173a58609daea48ad2ff33131ab75b, type: 3}
   m_Name: Level_Test
   m_EditorClassIdentifier: 
-  mainPathLength: 8
+  mainPathLength: 4
   hasShop: 0
   hasBoss: 0
   hasHiddenRoom: 0

@@ -52,4 +52,4 @@ MonoBehaviour:
   placedTeleporter: {fileID: 0}
   layerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 2147483647
