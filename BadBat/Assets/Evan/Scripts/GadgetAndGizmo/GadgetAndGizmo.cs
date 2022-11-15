@@ -41,8 +41,14 @@ public class GadgetAndGizmo : MonoBehaviour
         }
     }
 
+    private bool lastButtonContext = false;
     public void Fire(bool pressed) {
-        activeAbility.Fire(pressed);
+        if (lastButtonContext != pressed) {
+            activeAbility.Fire(pressed);
+            Debug.Log(pressed);
+            lastButtonContext = pressed;
+        }
+        
     }
 
     public void Equip(AbilityClass ability) {

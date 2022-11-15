@@ -39024,7 +39024,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1803743836}
   - component: {fileID: 1803743838}
-  - component: {fileID: 1803743837}
   m_Layer: 0
   m_Name: Clipping_GauntletCamera
   m_TagString: Untagged
@@ -39047,14 +39046,6 @@ Transform:
   m_Father: {fileID: 1469821429}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1803743837
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1803743835}
-  m_Enabled: 1
 --- !u!20 &1803743838
 Camera:
   m_ObjectHideFlags: 0

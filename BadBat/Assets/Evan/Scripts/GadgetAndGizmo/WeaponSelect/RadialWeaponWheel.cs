@@ -1,11 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 using Evan.Scripts.PlayerMovement;
 
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+
+using Button = UnityEngine.UI.Button;
+using Cursor = UnityEngine.Cursor;
+using Image = UnityEngine.UI.Image;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 
 //   (                                 _
@@ -34,6 +43,7 @@ public class RadialWeaponWheel : MonoBehaviour
         uiInputActions = new FPSPlayerInputActions();
         uiInputActions.UI.SwapAbility.started += ctx => ToggleMenu();
         uiInputActions.UI.Click.started += ctx => ClickSegment();
+        
     }
 	
     private void OnEnable() {
@@ -58,6 +68,15 @@ public class RadialWeaponWheel : MonoBehaviour
 
     private List<GameObject> wheelLeftButtons = new List<GameObject>();
     private List<GameObject> wheelRightButtons = new List<GameObject>();
+
+    private Vector2 lastMousePos;
+    private float lastLeftMagnitude;
+    private float lastRightMagnitude;
+    private enum InputDevice
+    {
+        Mouse,
+        Controller
+    }
 
     private void Start() {
         //imageToTest.alphaHitTestMinimumThreshold = 0.5f;
@@ -85,14 +104,15 @@ public class RadialWeaponWheel : MonoBehaviour
             OpenMenu();
         }
     }
-    
+
     private void Update() {
         var menuStatus = wheelUiParent.gameObject.activeSelf;
         if (menuStatus) {
             HoverSegment();
         }
     }
-    
+
+
     [ContextMenu("Open Menu")]
     public void OpenMenu() {
         FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(false);
@@ -137,27 +157,80 @@ public class RadialWeaponWheel : MonoBehaviour
         }
     }
 
+    private InputDevice currentDevice;
+    //Gets what input device is currently in use (If mouse is not moving it returns controller but this should be okay for now)
+    private InputDevice GetActiveDevice() {
+        Vector2 currentMousePos = uiInputActions.UI.Point.ReadValue<Vector2>();
+        InputDevice deviceToReturn;
+        
+        if (Vector2.Distance(currentMousePos, lastMousePos) <= 1f) { //If mouse hasn't moved
+            float currentLeftMagnitude = uiInputActions.UI.LeftJoystick.ReadValue<Vector2>().magnitude;
+            float currentRightMagnitude = uiInputActions.UI.RightClick.ReadValue<Vector2>().magnitude;
+            if (currentLeftMagnitude != lastLeftMagnitude || currentRightMagnitude != lastRightMagnitude) { //If joysticks have moved
+                lastLeftMagnitude = currentLeftMagnitude;
+                lastRightMagnitude = currentRightMagnitude;
+                deviceToReturn = InputDevice.Controller;
+            } else { //If NOTHING has moved
+                lastMousePos = currentMousePos;
+                deviceToReturn = currentDevice;
+            }
+        } else { //If mouse has moved
+            lastMousePos = currentMousePos;
+            deviceToReturn =  InputDevice.Mouse;
+        }
+
+        currentDevice = deviceToReturn;
+        return deviceToReturn;
+    }
+
     //Tracks the mouse around the wheel to pick a segment
     public GameObject GetSegment() {
-        Vector2 mousePos = uiInputActions.UI.Point.ReadValue<Vector2>();
+        // Debug.Log(GetActiveDevice());
+        if (GetActiveDevice() == InputDevice.Controller) {
+            //Get our inputs from joysticks
+            Vector2 leftJoystick = uiInputActions.UI.LeftJoystick.ReadValue<Vector2>();
+            Vector2 rightJoystick = uiInputActions.UI.RightJoystick.ReadValue<Vector2>();
+            
+            //Check if we are using the left or right one
+            var leftWheel = leftJoystick.magnitude >= 0.1;
+            
+            //Get the position around the circle we are at
+            Transform centerTrans = leftWheel ? wheelParentLeft : wheelParentRight;
+            List<GameObject> listToUse = leftWheel ? wheelLeftButtons : wheelRightButtons;
+            
+            Vector2 centerPos = centerTrans.transform.position;
+            Vector2 stickDir = leftWheel ? leftJoystick : rightJoystick;
 
-        var mouseOnLeft = mousePos.x < Screen.width / 2;
+            float angle = Vector2.Angle(Vector2.up, stickDir.normalized);
 
-        //Decide if we are using the left or right side wheel
-        Transform centerTrans = mouseOnLeft ? wheelParentLeft : wheelParentRight;
-        List<GameObject> listToUse = mouseOnLeft ? wheelLeftButtons : wheelRightButtons;
+            float gapAngle = 360 / listToUse.Count;
+            float finalAngle = stickDir.x < 0 ? 360 - angle : angle;
+
+            int selectedButtonIndex = (int)MathF.Floor(finalAngle / gapAngle);
         
-        Vector2 centerPos = centerTrans.transform.position;
-        Vector2 mouseDir = mousePos - centerPos;
+            return listToUse[selectedButtonIndex]; 
 
-        float angle = Vector2.Angle(Vector2.up, mouseDir.normalized);
+        } else {
+            Vector2 mousePos = uiInputActions.UI.Point.ReadValue<Vector2>();
 
-        float gapAngle = 360 / listToUse.Count;
-        float finalAngle = mousePos.x < centerPos.x ? 360 - angle : angle;
+            var mouseOnLeft = mousePos.x < Screen.width / 2;
 
-        int selectedButtonIndex = (int)MathF.Floor(finalAngle / gapAngle);
+            //Decide if we are using the left or right side wheel
+            Transform centerTrans = mouseOnLeft ? wheelParentLeft : wheelParentRight;
+            List<GameObject> listToUse = mouseOnLeft ? wheelLeftButtons : wheelRightButtons;
         
-        return listToUse[selectedButtonIndex];
+            Vector2 centerPos = centerTrans.transform.position;
+            Vector2 mouseDir = mousePos - centerPos;
+
+            float angle = Vector2.Angle(Vector2.up, mouseDir.normalized);
+
+            float gapAngle = 360 / listToUse.Count;
+            float finalAngle = mousePos.x < centerPos.x ? 360 - angle : angle;
+
+            int selectedButtonIndex = (int)MathF.Floor(finalAngle / gapAngle);
+        
+            return listToUse[selectedButtonIndex];   
+        }
     }
 
     //Uses the GetSegment to highlight the button we are selecting

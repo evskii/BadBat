@@ -27,6 +27,7 @@ namespace Evan.Scripts.PlayerMovement
             playerInputActions.Player.FireRight.started += ctx => RightFire(true);
             playerInputActions.Player.FireRight.canceled += ctx => RightFire(false);
 
+            //Moved to a whole new script [RadialWeaponWheel.cs]
             // playerInputActions.Player.SwapAbility.started += ctx => SwapAbility(true);
             // playerInputActions.Player.SwapAbility.canceled += ctx => SwapAbility(false);
         }
