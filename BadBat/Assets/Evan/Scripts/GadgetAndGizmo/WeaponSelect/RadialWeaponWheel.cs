@@ -165,7 +165,7 @@ public class RadialWeaponWheel : MonoBehaviour
         
         if (Vector2.Distance(currentMousePos, lastMousePos) <= 1f) { //If mouse hasn't moved
             float currentLeftMagnitude = uiInputActions.UI.LeftJoystick.ReadValue<Vector2>().magnitude;
-            float currentRightMagnitude = uiInputActions.UI.RightClick.ReadValue<Vector2>().magnitude;
+            float currentRightMagnitude = uiInputActions.UI.RightJoystick.ReadValue<Vector2>().magnitude;
             if (currentLeftMagnitude != lastLeftMagnitude || currentRightMagnitude != lastRightMagnitude) { //If joysticks have moved
                 lastLeftMagnitude = currentLeftMagnitude;
                 lastRightMagnitude = currentRightMagnitude;

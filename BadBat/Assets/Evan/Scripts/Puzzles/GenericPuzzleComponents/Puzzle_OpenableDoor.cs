@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class Puzzle_OpenableDoor : MonoBehaviour
 {
-
+    public bool doorOpen = false;
     public Transform closedPos;
     public Transform openedPos;
     private Transform targetPos;
@@ -15,16 +15,19 @@ public class Puzzle_OpenableDoor : MonoBehaviour
 
     private void Start() {
         transform.position = closedPos.position;
+        doorOpen = false;
     }
 
     public void OpenDoor() {
         moving = true;
         targetPos = openedPos;
+        doorOpen = true;
     }
 
     public void CloseDoor() {
         moving = true;
         targetPos = closedPos;
+        doorOpen = false;
     }
 
     private void Update() {
