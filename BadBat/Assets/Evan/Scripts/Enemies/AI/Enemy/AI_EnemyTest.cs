@@ -9,15 +9,18 @@ using UnityEngine.AI;
 
 using Random = UnityEngine.Random;
 
-public class AI_EnemyBase : MonoBehaviour, IConcuss
+public class AI_EnemyTest : MonoBehaviour, IConcuss
 {
 	[Header("Enemy Settings")]
+	[SerializeField] private AI_Room myRoom;
 	[SerializeField] private float baseMoveSpeed;
+	private float currentSpeedMulti;
+	[SerializeField] private float slowingRadius;
 
 	[Header("Concussion Effect Bits")]
-	private bool concussed = false;
 	[SerializeField] private Transform enemyHead;
 	[SerializeField] private GameObject concussionParticle;
+	private bool concussed = false;
 	private GameObject currentConcussionEffect;
 	private Coroutine concussionRemovalCoroutine;
 	
@@ -25,40 +28,51 @@ public class AI_EnemyBase : MonoBehaviour, IConcuss
 	private Animator animController;
 	public Transform primaryTarget;
 	private NavMeshAgent navMeshAgent;
-	[SerializeField] private float wanderDistance;
+	private Coroutine shortIdleCoroutine;
 
 	private void Start() {
+		//Get References
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		animController = GetComponent<Animator>();
+		
+		
 	}
 	
 	//--------------------- Actual STATE of ya ----------------------------------------------------------
-
-	private Vector3 GetRandomNavMeshPosition() {
-		Vector3 randomDirection = Random.insideUnitSphere * wanderDistance;
-		
-		randomDirection += transform.position;
-		NavMeshHit hit;
-		NavMesh.SamplePosition(randomDirection, out hit, wanderDistance, 1);
-		Vector3 finalPosition = hit.position;
-		return finalPosition;
-	}
+	
 
 	private void Update() {
 		Movement();
 	}
 
 	private void Movement() {
+		animController.SetBool("Walking", navMeshAgent.hasPath);
 		if (primaryTarget) {
-			navMeshAgent.SetDestination(primaryTarget.position);
-			Debug.Log("Distance to Target: " + Vector3.Distance(transform.position, primaryTarget.position));
-			if (Vector3.Distance(transform.position, primaryTarget.position) <= navMeshAgent.stoppingDistance) {
-				primaryTarget.position = GetRandomNavMeshPosition();
+			if (shortIdleCoroutine == null) {
+				navMeshAgent.SetDestination(primaryTarget.position);
+				// Debug.Log("Distance to Target: " + Vector3.Distance(transform.position, primaryTarget.position));
+				
+				var distToTarget = Vector3.Distance(transform.position, primaryTarget.position);
+				currentSpeedMulti = EvMath.Map(distToTarget, slowingRadius, 0, 1, 0.1f);
+				currentSpeedMulti = Mathf.Clamp(currentSpeedMulti, 0, 1);
+				navMeshAgent.speed = baseMoveSpeed * currentSpeedMulti;
+				
+				animController.SetFloat("WalkingAnimSpeed", currentSpeedMulti);
+				
+				if (Vector3.Distance(transform.position, primaryTarget.position) <= navMeshAgent.stoppingDistance) {
+					shortIdleCoroutine = StartCoroutine(ShortIdle());
+				}
 			}
-			animController.SetBool("Walking", true);
+			
 		}
 	}
 
+	private IEnumerator ShortIdle() {
+		navMeshAgent.ResetPath();
+		yield return new WaitForSeconds(Random.Range(1.5f, 3f));
+		primaryTarget.position = myRoom.GetRandomPositionInRoom(true);
+		shortIdleCoroutine = null;
+	}
 
 	//--------------------- Concussion Effect --------------------------------------------------------------
 	public void Concuss(float length) {
