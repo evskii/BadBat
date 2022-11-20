@@ -12,16 +12,25 @@ public class Ability_Teleporter : AbilityClass
 	private bool visualisationMode = false;
 	
 
-	public override void Equip(GameObject player, GameObject gauntlet) {
-		this.player = player; 
+	public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
+		this.player = player;
 		this.gauntlet = gauntlet;
+		this.myGag = myGag;
 	}
 
 	public override void Fire(bool pressed) {
 		visualisationMode = pressed && !placedTeleporter;
 		
-		if (!placedTeleporter) {
-			if (!visualisationMode) {
+		
+		if (!placedTeleporter) { 
+			
+			if (pressed) {
+				myGag.AnimWindUp();
+			} else {
+				myGag.AnimFire();
+			}
+			
+			if (!visualisationMode) { 
 				RaycastHit hit;
 			
 				if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, Mathf.Infinity, layerMask)) {
@@ -34,21 +43,28 @@ public class Ability_Teleporter : AbilityClass
 				}
 			}
 		} else {
-			if (!pressed) {
-				var charController = player.GetComponent<CharacterController>();
-				charController.enabled = false;
-				// player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
-				var rawPos = placedTeleporter.transform.position;
-				player.transform.position = new Vector3(rawPos.x, rawPos.y + charController.height, rawPos.z);
-				charController.enabled = true;
-
-				var destroyMe = placedTeleporter;
-				placedTeleporter = null;
-				Destroy(destroyMe);
+			if (!pressed) { //Teleport To Location
+				myGag.AnimSnapFinger();
+				Teleport();
 			}
 		}
-
 	}
+
+
+	private void Teleport() {
+				
+		var charController = player.GetComponent<CharacterController>();
+		charController.enabled = false;
+		// player.GetComponent<CharacterController>().Move(placedTeleporter.transform.position - player.transform.position);
+		var rawPos = placedTeleporter.transform.position;
+		player.transform.position = new Vector3(rawPos.x, rawPos.y + charController.height, rawPos.z);
+		charController.enabled = true;
+
+		var destroyMe = placedTeleporter;
+		placedTeleporter = null;
+		Destroy(destroyMe);
+	}
+	
 
 	private GameObject visualizationTeleporter;
 	

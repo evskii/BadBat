@@ -17,8 +17,15 @@ public class GadgetAndGizmo : MonoBehaviour
         Right
     }
     public Arm arm;
-    
+
+    public Animator animController;
+
     private void Start() {
+        animController = GetComponentInChildren<Animator>();
+        if (!animController) {
+            Debug.LogError("Cannot get Animoator for: " + gameObject.name);
+        }
+        
         playerInput = GetComponentInParent<FPSPlayerInput>();
         // Debug.Log(arm);
         if (arm == Arm.Left) {
@@ -30,7 +37,7 @@ public class GadgetAndGizmo : MonoBehaviour
         player = GetComponentInParent<FPSPlayerMovementCharacterController>().gameObject;
         
         activeAbility = availableAbilities[0];
-        activeAbility.Equip(player, gameObject);
+        activeAbility.Equip(player, gameObject, this);
         
         
     }
@@ -47,12 +54,35 @@ public class GadgetAndGizmo : MonoBehaviour
             activeAbility.Fire(pressed);
             lastButtonContext = pressed;
         }
-        
+    }
+
+    public void AnimWindUp() {
+        animController.SetTrigger("Windup");
+    }
+
+    public void AnimFire() {
+        animController.SetTrigger("Fire");
+    }
+
+    public void AnimImmediateFire() {
+        animController.SetTrigger("ImmediateFire");
+    }
+
+    public void AnimGunEquipped(bool isOn) {
+        animController.SetBool("FingerGunEquip", isOn);
+    }
+
+    public void AnimFingerGunFire() {
+        animController.SetTrigger("FingerGunFire");
+    }
+
+    public void AnimSnapFinger() {
+        animController.SetTrigger("SnapFinger");
     }
 
     public void Equip(AbilityClass ability) {
         activeAbility.UnEquip();
         activeAbility = ability;
-        ability.Equip(player, gameObject);
+        ability.Equip(player, gameObject, this);
     }
 }

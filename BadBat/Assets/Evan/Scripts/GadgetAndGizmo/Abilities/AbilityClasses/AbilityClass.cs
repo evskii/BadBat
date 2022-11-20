@@ -16,8 +16,9 @@ public abstract class AbilityClass : MonoBehaviour
 	public GameObject abilityProjectile;
 	[HideInInspector] public GameObject player;
 	[HideInInspector] public GameObject gauntlet;
+	[HideInInspector] public GadgetAndGizmo myGag;
 
-	public abstract void Equip(GameObject player, GameObject gauntlet);
+	public abstract void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag);
 
 	public abstract void Fire(bool pressed);
 

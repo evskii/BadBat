@@ -84,9 +84,11 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	}
 	
 	public void TakeDamage(int amt) {
-		currentHealth -= amt;
-		EnemyState stateToCall = currentHealth <= 0 ? GetComponent<EnemyState_Death>() : GetComponent<EnemyState_Hit>();
-		StateMachine(stateToCall);
+		if (enabled) {
+			currentHealth -= amt;
+			EnemyState stateToCall = currentHealth <= 0 ? GetComponent<EnemyState_Death>() : GetComponent<EnemyState_Hit>();
+			StateMachine(stateToCall);
+		}
 	}
 	
 

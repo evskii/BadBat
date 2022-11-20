@@ -17,9 +17,10 @@ public class Ability_Tripwire : AbilityClass
     
     private bool visualizationMode;
 
-    public override void Equip(GameObject player, GameObject gauntlet) {
+    public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
         this.player = player;
         this.gauntlet = gauntlet;
+        this.myGag = myGag;
 
         positiveMaterial = new Material(Shader.Find("Specular"));
         positiveMaterial.color = positiveColor;
@@ -29,6 +30,13 @@ public class Ability_Tripwire : AbilityClass
     }
     public override void Fire(bool pressed) {
         if (!placedTripwire) {
+            
+            if (pressed) {
+                myGag.AnimWindUp();
+            } else {
+                myGag.AnimFire();
+            }
+            
             if (!pressed) { //Release
                 visualizationMode = false;
                 Destroy(visualizationTripwire);

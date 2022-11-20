@@ -13,12 +13,20 @@ public class Ability_ElectricalCables : AbilityClass
     private GameObject cable;
     private GameObject endPointTransform;
     
-    public override void Equip(GameObject player, GameObject gauntlet) {
+    public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
         this.player = player;
         this.gauntlet = gauntlet;
+        this.myGag = myGag;
     }
     
     public override void Fire(bool pressed) {
+        
+        if (pressed) {
+            myGag.AnimWindUp();
+        } else {
+            myGag.AnimFire();
+        }
+        
         if (pressed) {
             RaycastHit hit;
 		

@@ -14,12 +14,13 @@ public class Ability_DeployableCover : AbilityClass
 	private float lastFire;
 	private float fireDelay = 2f;
 	
-	public override void Equip(GameObject player, GameObject gauntlet) {
+	public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
 		// Debug.Log( abilityName + " Equipped");
 		//Assign reference to the player and gauntlet (this.player and this.gauntlet refer
 		//to the variables made in the AbilityClass script that this derives from)
 		this.player = player; 
 		this.gauntlet = gauntlet;
+		this.myGag = myGag;
 		lastFire = 0;
 	}
 	
@@ -33,6 +34,7 @@ public class Ability_DeployableCover : AbilityClass
 			projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
 			projectile.transform.rotation = Quaternion.Euler(new Vector3(0, player.transform.rotation.eulerAngles.y, 0));
 			lastFire = Time.time;
+			myGag.AnimImmediateFire();
 		}
 	}
 

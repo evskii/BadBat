@@ -43,9 +43,9 @@ namespace Evan.Scripts.PlayerMovement
         [SerializeField] private float slideJumpMulti;
     
         [Header("Player Status")]
-        [SerializeField] private bool isMoving;
+        public bool isMoving;
         [SerializeField] private bool isGrounded;
-        [SerializeField] private bool isSprinting;
+        public bool isSprinting;
         [SerializeField] private bool isCrouched;
         [SerializeField] private bool isSliding;
     
@@ -104,7 +104,7 @@ namespace Evan.Scripts.PlayerMovement
                 characterController.Move(movement * currentMoveSpeed * Time.deltaTime);
 
                 //Tells us if the player is currently moving
-                if (Mathf.Abs(rawMoveInput.y) > 0 || Mathf.Abs(rawMoveInput.x) > 0) {
+                if (Mathf.Abs(rawMoveInput.y) > 0.1f || Mathf.Abs(rawMoveInput.x) > 0.1f) {
                     isMoving = true;
                 } else {
                     isMoving = false;

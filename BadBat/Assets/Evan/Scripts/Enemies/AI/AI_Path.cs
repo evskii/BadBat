@@ -11,13 +11,14 @@ public class AI_Path : MonoBehaviour
     //Explanation needed for future self as to why I did script like this. If the enemy leaves their path, this script would keep their progress
     //through the path with the beneath variable. Meaning they can just come back to the path if needed. No need to save index in the state script
     //then :)
-    public int currentPathPointIndex;
+    public int startPointIndex;
+    [HideInInspector] public int currentPathPointIndex;
 
     private void Start() {
 	    if (pathPoints.Count < 1) {
 		    Debug.LogError("The following path has 0 points: " + gameObject.name);
 	    }
-	    currentPathPointIndex = 0;
+	    currentPathPointIndex = startPointIndex;
     }
 
     public Vector3 GetNextPathPoint() {
