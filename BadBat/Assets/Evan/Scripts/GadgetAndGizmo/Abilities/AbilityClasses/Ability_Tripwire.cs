@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 
 public class Ability_Tripwire : AbilityClass
@@ -17,6 +19,8 @@ public class Ability_Tripwire : AbilityClass
     
     private bool visualizationMode;
 
+    public LayerMask layersToIgnore;
+    
     public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
         this.player = player;
         this.gauntlet = gauntlet;
@@ -42,16 +46,17 @@ public class Ability_Tripwire : AbilityClass
                 Destroy(visualizationTripwire);
                 
                 RaycastHit hit;
-                if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
+                if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange, ~layersToIgnore)) {
                     //Where we point on the wall to fire
                     var placementPoint = hit.point;
                     var placementNormal = hit.normal.normalized;
 
                     RaycastHit rayToWall;
-                    if (Physics.Raycast(placementPoint, placementNormal, out rayToWall, tripwireDistance)) {
+                    if (Physics.Raycast(placementPoint, placementNormal, out rayToWall, tripwireDistance, ~layersToIgnore)) {
                         placedTripwire = Instantiate(abilityProjectile, placementPoint, Quaternion.LookRotation(placementNormal.normalized), null);
                         placedTripwire.GetComponent<Projectile_Tripwire>().InitTripwire(placementPoint, rayToWall.point, tripwireDistance);
                     }
+                    
                 }
             } else { //Press
                 visualizationMode = true;
@@ -70,17 +75,18 @@ public class Ability_Tripwire : AbilityClass
             
             
             RaycastHit hit;
-            if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
+            if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange, ~layersToIgnore)) {
+                
                 //Where we point on the wall to fire
                 var placementPoint = hit.point;
                 var hitPoint = placementPoint;
 
                 visualizationTripwire.transform.position = hit.point;
                 visualizationTripwire.transform.rotation = Quaternion.LookRotation(hit.normal.normalized);
-                
+            
                 //We run a raycast from the new position back to the wall to find the wall [that is the same as the one it originally hit]
                 RaycastHit placementHit;
-                if (Physics.Raycast(placementPoint, hit.normal.normalized, out placementHit, tripwireDistance)) {
+                if (Physics.Raycast(placementPoint, hit.normal.normalized, out placementHit, tripwireDistance, ~layersToIgnore)) {
                     visualizationTripwire.GetComponent<Renderer>().material = positiveMaterial;
                 } else {
                     visualizationTripwire.GetComponent<Renderer>().material = negativeMaterial;

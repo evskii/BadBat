@@ -23,6 +23,8 @@ public class Ability_BreachCharge : AbilityClass
     
     private bool visualizationMode;
 
+    public LayerMask layersToIgnore;
+
     public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
         this.player = player;
         this.gauntlet = gauntlet;
@@ -48,7 +50,7 @@ public class Ability_BreachCharge : AbilityClass
                 Destroy(visualizationBreach);
                 
                 RaycastHit hit;
-                if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
+                if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange, ~layersToIgnore)) {
                     //Where we point on the wall to fire
                     var placementPoint = hit.point;
                     var hitPoint = placementPoint;
@@ -64,7 +66,7 @@ public class Ability_BreachCharge : AbilityClass
 
                     //We run a raycast from the new position back to the wall to find the wall [that is the same as the one it originally hit]
                     RaycastHit placementHit;
-                    if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness)) {
+                    if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness, ~layersToIgnore)) {
                         if (placementHit.collider == hit.collider) {
                             placedBreach = Instantiate(abilityProjectile, placementHit.point, Quaternion.LookRotation(placementHit.normal.normalized), null);
                         }
@@ -87,7 +89,7 @@ public class Ability_BreachCharge : AbilityClass
             
             
             RaycastHit hit;
-            if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange)) {
+            if (Physics.Raycast(gauntlet.transform.position, gauntlet.transform.forward , out hit, placementRange, ~layersToIgnore)) {
                 //Where we point on the wall to fire
                 var placementPoint = hit.point;
                 var hitPoint = placementPoint;
@@ -106,7 +108,7 @@ public class Ability_BreachCharge : AbilityClass
 
                 //We run a raycast from the new position back to the wall to find the wall [that is the same as the one it originally hit]
                 RaycastHit placementHit;
-                if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness)) {
+                if (Physics.Raycast(lookbackPos, hit.normal.normalized, out placementHit, deployableThickness, ~layersToIgnore)) {
                     visualizationBreach.GetComponent<Renderer>().material = placementHit.collider == hit.collider ? positiveMaterial : negativeMaterial;
                 } else {
                     visualizationBreach.GetComponent<Renderer>().material = negativeMaterial;

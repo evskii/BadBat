@@ -49,7 +49,11 @@ MonoBehaviour:
   abilityProjectile: {fileID: 302412075092361830, guid: 01afc21680f5b2241982786e120359bb, type: 3}
   player: {fileID: 0}
   gauntlet: {fileID: 0}
+  myGag: {fileID: 0}
   placementRange: 20
   tripwireDistance: 5
   positiveColor: {r: 0.09411766, g: 0.8000001, b: 0.23137257, a: 1}
   negativeColor: {r: 0.79215693, g: 0.08627451, b: 0.2509804, a: 1}
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 768

@@ -49,7 +49,11 @@ MonoBehaviour:
   abilityProjectile: {fileID: 334286521624152050, guid: 66b00e747702c5247a78ab67d6f01274, type: 3}
   player: {fileID: 0}
   gauntlet: {fileID: 0}
+  myGag: {fileID: 0}
   placementRange: 50
   deployableThickness: 2
   positiveColor: {r: 0.094562106, g: 0.8018868, b: 0.23197906, a: 1}
   negativeColor: {r: 0.7924528, g: 0.08597367, b: 0.2504228, a: 1}
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 768

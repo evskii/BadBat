@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionParticle: {fileID: 4357915372574885804, guid: 6b07a4df80c066946b1e8f21c9474f67, type: 3}
+  blastRadius: 3
+  damage: 10
 --- !u!120 &4371531297235939325
 LineRenderer:
   m_ObjectHideFlags: 0

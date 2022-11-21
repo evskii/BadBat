@@ -15,6 +15,9 @@ public class Projectile_Tripwire : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
+    public float blastRadius;
+    public int damage;
+
     public void InitTripwire(Vector3 startPos, Vector3 endPos, float maxLength) {
         lineRenderer = GetComponent<LineRenderer>();
         
@@ -38,7 +41,20 @@ public class Projectile_Tripwire : MonoBehaviour
                 Instantiate(explosionParticle, transform.position, Quaternion.identity);
                 Destroy(gameObject);
                 //NEED TO ADD CODE HERE TO MAKE SHIT TAKE DAMAGE
+                var itemsInRange = Physics.OverlapSphere(transform.position, blastRadius);
+		
+                foreach (var item in itemsInRange) {
+                    if (item.TryGetComponent(out IDamageable damageable)) {
+                        damageable.TakeDamage(damage);
+                    }
+                }
             }
         }
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.red;
+        
+        Gizmos.DrawWireSphere(transform.position, blastRadius);
     }
 }
