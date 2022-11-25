@@ -97,4 +97,8 @@ public class Ability_Tripwire : AbilityClass
 	
     public override void UnEquip() {
     }
+
+    public override void Clear() {
+        Destroy(placedTripwire);
+    }
 }

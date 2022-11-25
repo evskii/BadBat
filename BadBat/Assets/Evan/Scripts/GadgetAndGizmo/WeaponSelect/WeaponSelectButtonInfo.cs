@@ -27,11 +27,19 @@ public class WeaponSelectButtonInfo : MonoBehaviour
     }
     
     public void Equip() {
-        Debug.Log("EQUIP HIT");
         gauntlet.Equip(ability);
+        SelectButton();
     }
-    
-    private float Map(float x, float a, float b, float c, float d) {
-        return (x - a) / (b - a) * (d - c) + c;
+
+    public bool IsEquipped() {
+        return gauntlet.activeAbility == ability;
+    }
+
+    public void SelectButton() {
+        GetComponent<Image>().color = Color.green;
+    }
+
+    public void DeselectButton() {
+        GetComponent<Image>().color = Color.white;
     }
 }

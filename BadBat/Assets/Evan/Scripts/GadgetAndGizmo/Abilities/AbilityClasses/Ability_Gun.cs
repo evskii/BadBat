@@ -40,4 +40,5 @@ public class Ability_Gun : AbilityClass
 	public override void UnEquip() {
 		myGag.AnimGunEquipped(false);
 	}
+	
 }

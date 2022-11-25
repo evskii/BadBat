@@ -12,7 +12,7 @@ public class Damaging_Particles : MonoBehaviour
     public float damageRate;
     public int damage;
     private void OnParticleCollision(GameObject other) {
-        Debug.Log(other.name);
+        // Debug.Log(other.name);
         // Debug.Log("PARTICLE COLLISION" + other.name);
         if (other.TryGetComponent(out IDamageable damageable)) {
             if (!itemsToDamage.Contains(damageable)) {

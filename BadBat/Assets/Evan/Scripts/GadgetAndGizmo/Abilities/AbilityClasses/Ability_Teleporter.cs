@@ -21,7 +21,6 @@ public class Ability_Teleporter : AbilityClass
 	public override void Fire(bool pressed) {
 		visualisationMode = pressed && !placedTeleporter;
 		
-		
 		if (!placedTeleporter) { 
 			
 			if (pressed) {
@@ -99,5 +98,7 @@ public class Ability_Teleporter : AbilityClass
 		
 	}
 
-	
+	public override void Clear() {
+		Destroy(placedTeleporter);
+	}
 }

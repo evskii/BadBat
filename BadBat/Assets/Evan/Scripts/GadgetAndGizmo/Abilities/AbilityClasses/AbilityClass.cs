@@ -25,4 +25,8 @@ public abstract class AbilityClass : MonoBehaviour
 	public abstract void AbilityUpdate();
 
 	public abstract void UnEquip();
+
+	public virtual void Clear() {
+		
+	}
 }

@@ -30,9 +30,12 @@ public class GadgetAndGizmo : MonoBehaviour
         // Debug.Log(arm);
         if (arm == Arm.Left) {
             playerInput.LeftFire = Fire;
+            playerInput.ClearAbilityLeft = Clear;
         } else {
             playerInput.RightFire = Fire;
+            playerInput.ClearAbilityRight = Clear;
         }
+        
         
         player = GetComponentInParent<FPSPlayerMovementCharacterController>().gameObject;
         
@@ -53,6 +56,15 @@ public class GadgetAndGizmo : MonoBehaviour
         if (lastButtonContext != pressed) {
             activeAbility.Fire(pressed);
             lastButtonContext = pressed;
+        }
+    }
+
+    public void Clear(bool pressed) {
+        if (pressed) {
+            var lastEquipped = FindObjectOfType<RadialWeaponWheel>().lastEquippedAbility;
+            if (lastEquipped == activeAbility) {
+                lastEquipped.Clear();
+            }
         }
     }
 

@@ -27,6 +27,9 @@ namespace Evan.Scripts.PlayerMovement
             playerInputActions.Player.FireRight.started += ctx => RightFire(true);
             playerInputActions.Player.FireRight.canceled += ctx => RightFire(false);
 
+            playerInputActions.Player.ClearAbility.started += ctx => ClearAbility(true);
+            playerInputActions.Player.ClearAbility.canceled += ctx => ClearAbility(false);
+
             //Moved to a whole new script [RadialWeaponWheel.cs]
             // playerInputActions.Player.SwapAbility.started += ctx => SwapAbility(true);
             // playerInputActions.Player.SwapAbility.canceled += ctx => SwapAbility(false);
@@ -48,6 +51,17 @@ namespace Evan.Scripts.PlayerMovement
 
         public delegate void DelegateRightFire(bool pressed);
         public DelegateRightFire RightFire;
+
+        //Weird delegate setup due to having two separate objects for gauntlets
+        public delegate void DelegateClearAbility(bool pressed);
+        public DelegateClearAbility ClearAbilityLeft;
+        public DelegateClearAbility ClearAbilityRight;
+
+        public void ClearAbility(bool pressed) {
+            ClearAbilityLeft(pressed);
+            ClearAbilityRight(pressed);
+        }
+
 
         // public delegate void DelegateSwapAbility(bool pressed);
         // public DelegateSwapAbility SwapAbility;

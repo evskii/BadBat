@@ -89,6 +89,15 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ClearAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""a98991c4-05fa-4f9b-9270-02b6d738f8a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -364,6 +373,28 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""FireRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8ba74cc1-95aa-4649-8e0a-fe710d9d9fb3"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ClearAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0bbe3939-fd76-40a7-b701-85beb3836846"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ClearAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1139,6 +1170,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_ClearAbility = m_Player.FindAction("ClearAbility", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1220,6 +1252,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_ClearAbility;
     public struct PlayerActions
     {
         private @FPSPlayerInputActions m_Wrapper;
@@ -1231,6 +1264,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @ClearAbility => m_Wrapper.m_Player_ClearAbility;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1261,6 +1295,9 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @ClearAbility.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClearAbility;
+                @ClearAbility.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClearAbility;
+                @ClearAbility.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClearAbility;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1286,6 +1323,9 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
+                @ClearAbility.started += instance.OnClearAbility;
+                @ClearAbility.performed += instance.OnClearAbility;
+                @ClearAbility.canceled += instance.OnClearAbility;
             }
         }
     }
@@ -1473,6 +1513,7 @@ public partial class @FPSPlayerInputActions : IInputActionCollection2, IDisposab
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
+        void OnClearAbility(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

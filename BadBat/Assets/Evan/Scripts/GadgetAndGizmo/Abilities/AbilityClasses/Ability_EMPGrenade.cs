@@ -36,4 +36,5 @@ public class Ability_EMPGrenade : AbilityClass
 	
 	public override void UnEquip() {
 	}
+
 }

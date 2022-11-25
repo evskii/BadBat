@@ -44,7 +44,7 @@ public class Projectile_ElectricalCables : MonoBehaviour
             for (int i = 0; i < totalSteps; i++) {
                 var linePointVector = Vector3.Lerp(startPos.position, endPos.position, (float)i / totalSteps);
                 
-                Vector3 finalVector = i > 0 ? new Vector3(linePointVector.x, linePointVector.y * Random.Range(0.8f, 0.95f), linePointVector.z) : linePointVector;
+                Vector3 finalVector = i > 0 ? new Vector3(linePointVector.x, linePointVector.y * Random.Range(0.9f, 1.1f), linePointVector.z) : linePointVector;
                 
                 lineRenderer.SetPosition(i, finalVector);
             }

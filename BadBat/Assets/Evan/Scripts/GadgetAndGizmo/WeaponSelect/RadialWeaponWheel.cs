@@ -113,6 +113,7 @@ public class RadialWeaponWheel : MonoBehaviour
     }
 
 
+    //Called to open the weapon wheel UI
     [ContextMenu("Open Menu")]
     public void OpenMenu() {
         FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(false);
@@ -122,8 +123,25 @@ public class RadialWeaponWheel : MonoBehaviour
         Time.timeScale = 0.1f;
         
         SpawnSegments();
+
+        foreach (var button in wheelLeftButtons) {
+            WeaponSelectButtonInfo buttonInfo = button.GetComponent<WeaponSelectButtonInfo>();
+            if (buttonInfo.IsEquipped()) {
+                buttonInfo.SelectButton();
+                currentSelectedLeftButton = buttonInfo;
+            }
+        }
+
+        foreach (var button in wheelRightButtons) {
+            WeaponSelectButtonInfo buttonInfo = button.GetComponent<WeaponSelectButtonInfo>();
+            if (buttonInfo.IsEquipped()) {
+                buttonInfo.SelectButton();
+                currentSelectedRightButton = buttonInfo;
+            }
+        }
     }
 
+    //Called to close the weapon wheel UI
     [ContextMenu("Close Menu")]
     public void CloseMenu() {
         wheelUiParent.gameObject.SetActive(false);
@@ -151,18 +169,65 @@ public class RadialWeaponWheel : MonoBehaviour
         FindObjectOfType<FPSPlayerInput>().ToggleBasicMoves(true);
     }
 
+    //Called when the player inputs that they want to select the button they are pointing at
     private void ClickSegment() {
-        if (wheelUiParent.gameObject.activeSelf) {
-            GetSegment().GetComponent<WeaponSelectButtonInfo>().Equip();
+        if (wheelUiParent.gameObject.activeSelf) { //Checks to see if the UI is actually open
+            bool onLeft = false;
+            if (GetActiveDevice() == InputDevice.Controller) {
+                //Get our directional inputs from joysticks
+                Vector2 leftJoystick = uiInputActions.UI.LeftJoystick.ReadValue<Vector2>();
+
+                //Check if we are using the left or right one
+                onLeft = leftJoystick.magnitude >= 0.1;
+            } else {
+                //Get input position from the mouse
+                Vector2 mousePos = uiInputActions.UI.Point.ReadValue<Vector2>();
+
+                //Check if we are on the left of the screen
+                onLeft = mousePos.x < Screen.width / 2;
+            }
+            
+            ChangeEquipped(onLeft, GetSegment().GetComponent<WeaponSelectButtonInfo>());
+            // GetSegment().GetComponent<WeaponSelectButtonInfo>().Equip();
         }
     }
 
-    private InputDevice currentDevice;
+    //Used to store the currently selected buttons [active abilities] and allows change between them
+    public AbilityClass lastEquippedAbility;
+    private WeaponSelectButtonInfo currentSelectedLeftButton;
+    private WeaponSelectButtonInfo currentSelectedRightButton;
+    private void ChangeEquipped(bool changeLeft, WeaponSelectButtonInfo toChange) {
+        //Not great code here but I just need it to work now
+        if (changeLeft) {
+            if (currentSelectedLeftButton) {
+                currentSelectedLeftButton.DeselectButton();
+            }
+            currentSelectedLeftButton = toChange;
+            currentSelectedLeftButton.Equip();
+        } else {
+            if (currentSelectedRightButton) {
+                currentSelectedRightButton.DeselectButton();
+            }
+            currentSelectedRightButton = toChange;
+            currentSelectedRightButton.Equip();
+        }
+        StartCoroutine(RegainControl());
+        lastEquippedAbility = toChange.ability;
+    }
+
+    private IEnumerator RegainControl() {
+        Time.timeScale = 1;
+        yield return new WaitForSeconds(.1f);
+        CloseMenu();
+    }
+
+    
     //Gets what input device is currently in use (If mouse is not moving it returns controller but this should be okay for now)
+    private InputDevice currentDevice;
     private InputDevice GetActiveDevice() {
         Vector2 currentMousePos = uiInputActions.UI.Point.ReadValue<Vector2>();
         InputDevice deviceToReturn;
-        
+                    
         if (Vector2.Distance(currentMousePos, lastMousePos) <= 1f) { //If mouse hasn't moved
             float currentLeftMagnitude = uiInputActions.UI.LeftJoystick.ReadValue<Vector2>().magnitude;
             float currentRightMagnitude = uiInputActions.UI.RightJoystick.ReadValue<Vector2>().magnitude;
@@ -248,7 +313,7 @@ public class RadialWeaponWheel : MonoBehaviour
             // newSegment.transform.Rotate(0,0, -(i * rotationAmt));
             newSegment.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -(i * rotationAmt)));
             Image imageComponent = newSegment.GetComponent<Image>();
-            imageComponent.fillAmount = Map(rotationAmt, 0, 360, 0, 1);
+            imageComponent.fillAmount = EvMath.Map(rotationAmt, 0, 360, 0, 1);
             imageComponent.alphaHitTestMinimumThreshold = 0.5f;
             // imageComponent.color = Random.ColorHSV();
             newSegment.name = leftGauntlet.availableAbilities[i].abilityName;
@@ -264,16 +329,12 @@ public class RadialWeaponWheel : MonoBehaviour
             // newSegment.transform.Rotate(0,0, -(i * rotationAmt));
             newSegment.transform.rotation = Quaternion.Euler(new Vector3(0, 0, -(i * rotationAmt)));
             Image imageComponent = newSegment.GetComponent<Image>();
-            imageComponent.fillAmount = Map(rotationAmt, 0, 360, 0, 1);
+            imageComponent.fillAmount = EvMath.Map(rotationAmt, 0, 360, 0, 1);
             imageComponent.alphaHitTestMinimumThreshold = 0.5f;
             // imageComponent.color = Random.ColorHSV();
             newSegment.name = rightGauntlet.availableAbilities[i].abilityName;
             wheelRightButtons.Add(newSegment);
             newSegment.GetComponent<WeaponSelectButtonInfo>().InitButtonInfo(rightGauntlet.availableAbilities[i], rightGauntlet);
         }
-    }
-
-    private float Map(float x, float a, float b, float c, float d) {
-        return (x - a) / (b - a) * (d - c) + c;
     }
 }

@@ -13,6 +13,8 @@ public class Ability_DeployableCover : AbilityClass
 
 	private float lastFire;
 	private float fireDelay = 2f;
+
+	private GameObject placedCover;
 	
 	public override void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag) {
 		// Debug.Log( abilityName + " Equipped");
@@ -25,16 +27,15 @@ public class Ability_DeployableCover : AbilityClass
 	}
 	
 	public override void Fire(bool pressed) {
-		var coverInScene = FindObjectsOfType<SubProjectile_DeployableCover>();
-		
 		//Basic code to spawn a projectile and fire it.
-		if (pressed && coverInScene.Length == 0 && Time.time > lastFire + fireDelay) {
-			var projectile = Instantiate(abilityProjectile, gauntlet.transform.position, Quaternion.identity);
+		if (pressed && !placedCover) {
+			var temp = Instantiate(abilityProjectile, gauntlet.transform.position, Quaternion.identity);
 			var forceDir = gauntlet.transform.rotation * new Vector3(0f, 0f, projectileForce);
-			projectile.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
-			projectile.transform.rotation = Quaternion.Euler(new Vector3(0, player.transform.rotation.eulerAngles.y, 0));
+			temp.GetComponent<Rigidbody>().AddRelativeForce(forceDir, ForceMode.Impulse);
+			temp.transform.rotation = Quaternion.Euler(new Vector3(0, player.transform.rotation.eulerAngles.y, 0));
 			lastFire = Time.time;
 			myGag.AnimImmediateFire();
+			placedCover = temp;
 		}
 	}
 
@@ -43,5 +44,9 @@ public class Ability_DeployableCover : AbilityClass
 	}
 
 	public override void UnEquip() {
+	}
+
+	public override void Clear() {
+		Destroy(placedCover);
 	}
 }
