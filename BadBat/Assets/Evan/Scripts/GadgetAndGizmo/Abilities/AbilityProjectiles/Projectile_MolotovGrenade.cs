@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+
 using UnityEngine;
 
 public class Projectile_MolotovGrenade : MonoBehaviour
@@ -11,6 +13,7 @@ public class Projectile_MolotovGrenade : MonoBehaviour
     public float burnTime;
     public float damageRate;
     public int damage;
+
 
     private void OnCollisionEnter(Collision other) {
         if (other.contacts[0].normal == new Vector3(0, 1, 0)) { //Allow the collision to register if its on the ground
@@ -25,6 +28,8 @@ public class Projectile_MolotovGrenade : MonoBehaviour
 
             fireArea.GetComponent<Damaging_Particles>().damage = damage;
             fireArea.GetComponent<Damaging_Particles>().damageRate = damageRate;
+            
+            Destroy(gameObject, burnTime);
         }
 
     }

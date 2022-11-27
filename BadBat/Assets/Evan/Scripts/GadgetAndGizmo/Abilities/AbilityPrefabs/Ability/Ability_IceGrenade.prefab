@@ -46,7 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Ice Grenade
   abilityType: 0
-  abilityProjectile: {fileID: 3041033113578353008, guid: 6a183d5ef69f21a4b820f31f8baf1175, type: 3}
+  abilityProjectile: {fileID: 4565166480851731419, guid: d45f81c9ed3d110458e21bc309b35f24, type: 3}
   player: {fileID: 0}
   gauntlet: {fileID: 0}
+  myGag: {fileID: 0}
   projectileForce: 15

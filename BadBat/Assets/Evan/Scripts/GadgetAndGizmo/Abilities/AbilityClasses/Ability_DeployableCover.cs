@@ -40,13 +40,27 @@ public class Ability_DeployableCover : AbilityClass
 	}
 
 	public override void AbilityUpdate() {
-		//Not Used
+		//Such bad code but fuckit we ball
+		var temp = FindObjectOfType<SubProjectile_DeployableCover>(); 
+		if (temp) {
+			placedCover = temp.gameObject;
+		}
 	}
 
 	public override void UnEquip() {
 	}
 
 	public override void Clear() {
-		Destroy(placedCover);
+		if (placedCover) {
+			Destroy(placedCover);
+		} else {
+			var subProj = FindObjectOfType<SubProjectile_DeployableCover>();
+			if (subProj) {
+				Destroy(subProj.gameObject);
+			}
+			
+		}
+		
+		
 	}
 }

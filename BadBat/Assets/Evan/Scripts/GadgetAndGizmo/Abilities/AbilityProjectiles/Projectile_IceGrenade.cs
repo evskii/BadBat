@@ -8,22 +8,21 @@ public class Projectile_IceGrenade : MonoBehaviour
 
     public GameObject projectileMesh;
     public GameObject iceArea;
+    public float particleLifetime;
 
     private void OnCollisionEnter(Collision other) {
-        //Spawn in ice area
-        GetComponent<Collider>().enabled = false;
-        GetComponent<Rigidbody>().isKinematic = true;
-        projectileMesh.SetActive(false);
-        // GameObject iceArea = new GameObject();
-        // iceArea.name = "Ice Area";
-        // var collider = iceArea.AddComponent<BoxCollider>();
-        // collider.isTrigger = true;
-        // iceArea.tag = "Ice";
-        // collider.size = new Vector3(10, 10, 10);
-        // iceArea.transform.position = transform.position;
+        if (other.contacts[0].normal == new Vector3(0, 1, 0)) { //Allow the collision to register if its on the ground
+            //Spawn in ice area
+            GetComponent<Collider>().enabled = false;
+            GetComponent<Rigidbody>().isKinematic = true;
+            projectileMesh.SetActive(false);
         
-        iceArea.SetActive(true);
+            iceArea.SetActive(true);
+            transform.rotation = Quaternion.Euler(new Vector3(0,1,0));
+            iceArea.GetComponent<ParticleSystem>().startLifetime = particleLifetime;
 
-        // Destroy(gameObject);
+            
+            Destroy(gameObject, particleLifetime);
+        }
     }
 }

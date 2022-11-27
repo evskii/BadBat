@@ -19,3 +19,8 @@ public interface IElectrical {
 public interface IConcuss {
 	public void Concuss(float length);
 }
+
+public interface IFreezeable
+{
+	public void Freeze();
+}

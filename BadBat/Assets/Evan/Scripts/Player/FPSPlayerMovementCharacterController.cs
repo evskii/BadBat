@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Evan.Scripts.PlayerMovement
 {
-    public class FPSPlayerMovementCharacterController : MonoBehaviour
+    public class FPSPlayerMovementCharacterController : MonoBehaviour, IFreezeable
     {
         public FPSPlayerInputActions playerInputActions;
         private FPSPlayerInput playerInput;
@@ -223,20 +224,37 @@ namespace Evan.Scripts.PlayerMovement
         }
         
         //World Effects
-        private void OnTriggerEnter(Collider other) {
-            if (other.CompareTag("Ice")) {
-                stoppingLerpPower = 1;
-                baseMoveSpeed = 12;
+        // private void OnTriggerEnter(Collider other) {
+        //     if (other.CompareTag("Ice")) {
+        //         stoppingLerpPower = 1;
+        //         baseMoveSpeed = 12;
+        //     }
+        // }
+        //
+        // private void OnTriggerExit(Collider other) {
+        //     if (other.CompareTag("Ice")) {
+        //         stoppingLerpPower = 5;
+        //         baseMoveSpeed = 8;
+        //     }
+        // }
+
+
+        //Need to change some of this code so the change values arent hard coded
+        private Coroutine freezeCoroutine;
+        public void Freeze() {
+            // Debug.Log("Freeze HIT!");
+            stoppingLerpPower = 1;
+            baseMoveSpeed = 12;
+            if (freezeCoroutine != null) {
+                StopCoroutine(freezeCoroutine);
             }
+            freezeCoroutine = StartCoroutine(FreezeTick());
         }
 
-        private void OnTriggerExit(Collider other) {
-            if (other.CompareTag("Ice")) {
-                stoppingLerpPower = 5;
-                baseMoveSpeed = 8;
-            }
+        private IEnumerator FreezeTick() {
+            yield return new WaitForSeconds(1f);
+            stoppingLerpPower = 5;
+            baseMoveSpeed = 8;
         }
-
-
     }
 }
