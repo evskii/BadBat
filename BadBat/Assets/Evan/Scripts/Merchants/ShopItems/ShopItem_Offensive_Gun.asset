@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75cfe62de21c23141ba8bbaf5f736d90, type: 3}
+  m_Name: ShopItem_Offensive_Gun
+  m_EditorClassIdentifier: 
+  itemName: Gun
+  itemDescription: An offensive upgrade to your gauntlet, providing you with some
+    finger gun action... Point at your target and say "Pew".
+  itemSprite: {fileID: 0}
+  itemType: 0
+  itemCostCash: 3000
+  itemCostParts: 150

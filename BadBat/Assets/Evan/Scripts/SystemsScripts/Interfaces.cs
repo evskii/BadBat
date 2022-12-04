@@ -20,7 +20,11 @@ public interface IConcuss {
 	public void Concuss(float length);
 }
 
-public interface IFreezeable
-{
+public interface IFreezeable {
 	public void Freeze();
+}
+
+public interface IPurchase
+{
+	public void Purchase(SO_ShopItems item);
 }
