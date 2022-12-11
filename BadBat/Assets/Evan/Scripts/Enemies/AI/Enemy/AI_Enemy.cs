@@ -19,24 +19,30 @@ public class AI_Enemy : MonoBehaviour, IDamageable
     public float baseMoveSpeed;
 	[HideInInspector] public float currentSpeedMulti;
 	public float slowingRadius;
+	public float viewingAngle = 75f;
 
 	[Header("Enemy Health and Shit")]
 	[SerializeField] private int maxHealth;
 	[SerializeField] private int currentHealth;
 	
+	//Random References
+	[Header("Random References")]
+	public Transform enemyHead;
+	public LayerMask enemyLayer;
 
 	//States and other precarious behaviours
+	[Header("AI and State Machine Stuff")]
+	public AI_Room myRoom;
 	[HideInInspector] public Animator animController;
 	[HideInInspector] public NavMeshAgent navMeshAgent;
-	public AI_Room myRoom;
-	
+
+	public EnemyState globalState; //Used ontop of state machine state
 	public EnemyState startingState;
-	[SerializeField] private EnemyState currentState;
+	public EnemyState currentState;
 	public EnemyState previousState;
 
 	//Effects and Extra shite
 	[Header("Concussion Effect Bits")]
-	[SerializeField] private Transform enemyHead;
 	[SerializeField] private GameObject concussionParticle;
 	private bool concussed = false;
 	private GameObject currentConcussionEffect;
@@ -48,14 +54,26 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		animController = GetComponent<Animator>();
 
-		//error checker for start state
-		if (startingState == null) {
-			Debug.LogError("There is no starting EnemyState set for: " + gameObject.name);
+		//error checking
+		if (!myRoom) {
+			Debug.Log("<color=cyan> No Room set on enemy: </color>" + gameObject.name);
+			return;
+		}
+		
+		if (!startingState) {
+			Debug.LogError("<color=cyan> There is no starting EnemyState set for: </color>" + gameObject.name);
 			enabled = false; //Disables script
 		} else {
 			currentState = startingState;
 			currentState.Enter();
 		}
+
+		if (!globalState) {
+			Debug.Log("<color=cyan> There is no global state for: </color>" + gameObject.name);
+		} else {
+			globalState.Enter();
+		}
+		
 		
 		//set values
 		currentHealth = maxHealth;
@@ -65,6 +83,9 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	
 	private void Update() {
 		currentState.Think();
+		if (globalState) {
+			globalState.Think();
+		}
 	}
 
 	public void StateMachine(EnemyState newState) {
@@ -91,6 +112,12 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 		}
 	}
 	
+	//--------------------- Handy AI Methods Effect --------------------------------------------------------------
+	public bool InsideViewingAngle(Vector3 position) {
+		float angle = Vector3.Angle(transform.forward, position - transform.position);
+		return angle <= viewingAngle;
+	}
+	
 
 	//--------------------- Concussion Effect --------------------------------------------------------------
 	public void Concuss(float length) {
@@ -109,5 +136,8 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 		concussed = false;
 		Destroy(currentConcussionEffect);
 	}
+	
+	
+	
 	
 }

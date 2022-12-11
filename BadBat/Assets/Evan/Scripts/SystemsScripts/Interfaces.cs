@@ -28,3 +28,8 @@ public interface IPurchase
 {
 	public void Purchase(SO_ShopItems item);
 }
+
+public interface IAlert
+{
+	public void Alert(Vector3 alertLocationTransform);
+}

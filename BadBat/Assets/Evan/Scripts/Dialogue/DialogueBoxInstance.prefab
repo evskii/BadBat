@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1f45cc3b7d6411e48a539a47f4892569, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6f838a5dcf6e5dc46a5e48aa75f9b253, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -389,6 +389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6816374511401463075}
   - component: {fileID: 8787901192841873298}
+  - component: {fileID: 7196018483230236361}
   m_Layer: 5
   m_Name: DialogueBoxInstance
   m_TagString: Untagged
@@ -432,3 +433,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueText: {fileID: 6816374510938315069}
+--- !u!114 &7196018483230236361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6816374511401463074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e988f5571121f214ababd28903fc649c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
+  moveSpeed: 5
+  stoppingDistance: 1

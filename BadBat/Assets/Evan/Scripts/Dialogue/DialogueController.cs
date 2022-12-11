@@ -20,6 +20,9 @@ public class DialogueController : MonoBehaviour
     private Coroutine queIterationCoroutine;
     
     private List<GameObject> dialogueInstanceQue = new List<GameObject>();
+
+    [SerializeField] private Transform startLerpTrans;
+    [SerializeField] private Transform endLerpTrans;
     
     //Create a new dialogue instance
     public void NewDialogueInstance(string dialogue, string characterName) {
@@ -33,8 +36,14 @@ public class DialogueController : MonoBehaviour
     }
 
     private IEnumerator IterateQue() {
-        Debug.Log("ITERATE QUE START");
+        
         dialogueInstanceQue[0].SetActive(true);
+        
+        var lerpComponent =  dialogueInstanceQue[0].GetComponent<UILerp>();
+        lerpComponent.startPos = startLerpTrans;
+        lerpComponent.endPos = endLerpTrans;
+        lerpComponent.LerpToEndPos();
+        
         yield return new WaitForSeconds(defaultQueIterateTime);
 
         var toDestroy = dialogueInstanceQue[0];
@@ -46,7 +55,7 @@ public class DialogueController : MonoBehaviour
         } else {
             queIterationCoroutine = null;
         }
-        Debug.Log("ITERATE QUE STOP");
+        
     }
     
     

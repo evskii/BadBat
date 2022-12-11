@@ -434,7 +434,7 @@ GameObject:
   - component: {fileID: 1985442747628174692}
   - component: {fileID: 1985442747628174693}
   m_Layer: 8
-  m_Name: AI_EnemyBase
+  m_Name: AI_EnemyBase_OLD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
