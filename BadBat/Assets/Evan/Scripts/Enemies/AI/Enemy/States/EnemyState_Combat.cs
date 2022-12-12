@@ -116,10 +116,10 @@ public class EnemyState_Combat : EnemyState
 
 		bool shotHit = Random.Range(0, 100) <= accuracy;
 		if (shotHit) {
-			Debug.Log("Shot Hit");
+			// Debug.Log("Shot Hit");
 			combatGameObject.GetComponent<IDamageable>().TakeDamage(damage);
 		} else {
-			Debug.Log("Shot Missed");
+			// Debug.Log("Shot Missed");
 		}
 
 
@@ -140,7 +140,10 @@ public class EnemyState_Combat : EnemyState
 	}
 	
 	public override void Exit() {
-		StopCoroutine(reloadCoroutine);
+		if (reloadCoroutine != null) {
+			StopCoroutine(reloadCoroutine);
+		}
+		
 		reloadCoroutine = null;
 		previousState = null;
 		combatLocation = Vector3.zero;

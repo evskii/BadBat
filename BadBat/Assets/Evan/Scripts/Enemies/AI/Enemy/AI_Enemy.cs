@@ -90,6 +90,9 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 
 	public void StateMachine(EnemyState newState) {
 		currentState.Exit();
+		
+		Debug.Log("<color=red>Leaving State: </color>" + currentState);
+		Debug.Log("<color=green>Entering State: </color>" + newState);
 
 		previousState = currentState;
 		currentState = newState;
