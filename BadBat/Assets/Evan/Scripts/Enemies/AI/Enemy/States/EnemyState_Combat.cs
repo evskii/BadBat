@@ -43,7 +43,7 @@ public class EnemyState_Combat : EnemyState
 		combatLocation = combatGameObject.transform.position;
 		previousState = currentState;
 		combatInitiated = true;
-		Debug.Log("Combat State Entered Successfully");
+		// Debug.Log("Combat State Entered Successfully");
 	}
 	
 	public override void Enter() {

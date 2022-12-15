@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
+
 using Random = UnityEngine.Random;
 
 public class AI_Room : MonoBehaviour
@@ -19,6 +23,37 @@ public class AI_Room : MonoBehaviour
     [SerializeField] private Color debugColor;
     private Vector3 castFrom;
     private Vector3 randomPos;
+
+    [HideInInspector] public List<AI_Enemy> roomEnemies = new List<AI_Enemy>();
+    [SerializeField] private bool useEnemyClearEvent;
+    [SerializeField] private UnityEvent enemyClearEvent;
+    
+    
+    private void Awake() {
+        var allEnemies = FindObjectsOfType<AI_Enemy>().ToList();
+        foreach (var enemy in allEnemies) {
+            if (enemy.myRoom == this) {
+                roomEnemies.Add(enemy);
+            }
+        }
+        
+    }
+
+    private void Update() {
+        if (useEnemyClearEvent) {
+            int enemiesLeft = 0;
+            foreach (var enemy in roomEnemies) {
+                if (!enemy.dead) {
+                    enemiesLeft++;
+                } 
+            }
+            if (enemiesLeft == 0) {
+                enemyClearEvent.Invoke();
+                useEnemyClearEvent = false; //So it doesnt keep running turn it false
+            }
+        }
+        
+    }
 
     public Vector3 GetRandomPositionInRoom(bool requireNavmesh) {
         Vector3 finalPosition = Vector3.zero; //Setup return vector

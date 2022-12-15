@@ -25,8 +25,9 @@ public class EnemyState_GlobalState_BasicAI : EnemyState, IAlert
 	}
 	
 	public override void Think() {
-		//If we are not currently pursuing the player then we are looking for the player
-		if (enemy.currentState != enemy.GetComponent<EnemyState_Pursue>() && enemy.currentState != enemy.GetComponent<EnemyState_Combat>() && alwaysHostile) {
+		//We use the below bool to show when we can call WatchForPlayer [Basically what states transition into puruse]
+		bool stateCheck = enemy.currentState == enemy.GetComponent<EnemyState_Idle>() || enemy.currentState == enemy.GetComponent<EnemyState_Patrol>();
+		if (stateCheck && alwaysHostile) {
 			WatchForPlayer();
 		}
 	}

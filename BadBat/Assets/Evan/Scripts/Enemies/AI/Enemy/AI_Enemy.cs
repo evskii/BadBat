@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using UnityEditor.Experimental.GraphView;
-
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,6 +22,11 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	[Header("Enemy Health and Shit")]
 	[SerializeField] private int maxHealth;
 	[SerializeField] private int currentHealth;
+	[SerializeField] private float hitStunDelay = 1f;
+	public bool dead = false;
+	private bool stunned = false;
+	private Coroutine hitStun;
+	
 	
 	//Random References
 	[Header("Random References")]
@@ -82,7 +85,10 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	//--------------------- Actual STATE of ya ----------------------------------------------------------
 	
 	private void Update() {
-		currentState.Think();
+		if (!stunned) {
+			currentState.Think();
+		}
+		
 		if (globalState) {
 			globalState.Think();
 		}
@@ -91,8 +97,8 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	public void StateMachine(EnemyState newState) {
 		currentState.Exit();
 		
-		Debug.Log("<color=red>Leaving State: </color>" + currentState);
-		Debug.Log("<color=green>Entering State: </color>" + newState);
+		// Debug.Log("<color=red>Leaving State: </color>" + currentState);
+		// Debug.Log("<color=green>Entering State: </color>" + newState);
 
 		previousState = currentState;
 		currentState = newState;
@@ -110,9 +116,32 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	public void TakeDamage(int amt) {
 		if (enabled) {
 			currentHealth -= amt;
-			EnemyState stateToCall = currentHealth <= 0 ? GetComponent<EnemyState_Death>() : GetComponent<EnemyState_Hit>();
-			StateMachine(stateToCall);
+			
+			// EnemyState stateToCall = currentHealth <= 0 ? GetComponent<EnemyState_Death>() : GetComponent<EnemyState_Hit>();
+			// StateMachine(stateToCall);
+
+			if (currentHealth <= 0) {
+				StateMachine(GetComponent<EnemyState_Death>());
+				dead = true;
+			}
+
+			if (hitStun != null) {
+				StopCoroutine(hitStun);
+			}
+			hitStun = StartCoroutine(HitStun());
+			
 		}
+	}
+
+	private IEnumerator HitStun() {
+		stunned = true;
+		animController.SetTrigger("Hit");
+		navMeshAgent.isStopped = true;
+		
+		yield return new WaitForSeconds(hitStunDelay);
+		
+		navMeshAgent.isStopped = false;
+		stunned = false;
 	}
 	
 	//--------------------- Handy AI Methods Effect --------------------------------------------------------------

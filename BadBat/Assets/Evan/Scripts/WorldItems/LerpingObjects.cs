@@ -13,7 +13,15 @@ public class LerpingObjects : MonoBehaviour
 	public float moveSpeed;
 	public float stoppingDistance;
 
+	public bool lerpOnStart = false;
+	
 	private bool active = false;
+
+	private void Start() {
+		if (lerpOnStart) {
+			LerpToStartPos();
+		}
+	}
 
 	public void LerpToEndPos() {
 		destinationPosition = endPos;

@@ -44,8 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03a5af492be281845a06df537cd8f118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityName: Test Grenade
+  abilityName: Frag Grenade
   abilityType: 1
   abilityProjectile: {fileID: 3041033113578353008, guid: 2093fe2c15f91114285cf1ca47deb9b3, type: 3}
   player: {fileID: 0}
+  gauntlet: {fileID: 0}
+  myGag: {fileID: 0}
   projectileForce: 15
