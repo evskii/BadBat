@@ -14,6 +14,7 @@ public class Puzzle_ElectricalBox : MonoBehaviour,IElectrical
 	public float timedEventDelay;
 	public UnityEvent timedDelayEvent;
 
+
     public void Surge() {
        surgeEvent.Invoke();
 
@@ -21,6 +22,7 @@ public class Puzzle_ElectricalBox : MonoBehaviour,IElectrical
 	       StartCoroutine(CallTimedEvent());
        }
     }
+
 
     private IEnumerator CallTimedEvent() {
 	    yield return new WaitForSeconds(timedEventDelay);

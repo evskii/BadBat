@@ -19,7 +19,11 @@ public class GadgetAndGizmo : MonoBehaviour
     public Arm arm;
 
     public Animator animController;
+    private AudioSource audioSource;
 
+    //Body part referencing
+    public Transform indexFingerTip;
+    
     private void Start() {
         animController = GetComponentInChildren<Animator>();
         if (!animController) {
@@ -41,14 +45,19 @@ public class GadgetAndGizmo : MonoBehaviour
         
         activeAbility = availableAbilities[0];
         activeAbility.Equip(player, gameObject, this);
-        
-        
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update() {
         if (activeAbility) {
             activeAbility.AbilityUpdate(); //Calls the update inside of the abolities [Most dont actually use this]
         }
+    }
+
+    public void PlaySFX(AudioClip sfxCLip) {
+        audioSource.clip = sfxCLip;
+        audioSource.Play();
     }
 
     private bool lastButtonContext = false;

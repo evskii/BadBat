@@ -49,5 +49,16 @@ MonoBehaviour:
   abilityProjectile: {fileID: 0}
   player: {fileID: 0}
   gauntlet: {fileID: 0}
+  myGag: {fileID: 0}
+  sfxClips:
+  - {fileID: 8300000, guid: 144e129a3ba7e994999f6188b7f0a5fc, type: 3}
+  - {fileID: 8300000, guid: bdf3462225457f541b2fd0ab6e03a014, type: 3}
+  - {fileID: 8300000, guid: df6e9a17c1c71db43af8d4831e472c86, type: 3}
+  - {fileID: 8300000, guid: 95737ba6660b7a04db64f004c9b00438, type: 3}
+  - {fileID: 8300000, guid: 16739fae4e78c4a45aa5d91da6eace61, type: 3}
   gunRange: 50
   gunDamage: 5
+  fireRate: 0.25
+  gunShotParticle: {fileID: 2589196502022034407, guid: 14bddc810520c4340a91398707a98efe, type: 3}
+  bulletHitParticle: {fileID: 7219217512439507043, guid: 2cbbc093389c8cc4b95c20273f2dc475, type: 3}
+  bulletHoleQuad: {fileID: 8692278268974698838, guid: 12d2cbdeeccbe3344aaa201e0ed48c1c, type: 3}

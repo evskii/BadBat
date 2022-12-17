@@ -28,6 +28,7 @@ public class Electrical_ElectricBox : MonoBehaviour, IElectrical
         // Destroy(gameObject);
     }
 
+
     private void OnDrawGizmos() {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, blastRadius);

@@ -35,6 +35,7 @@ namespace Evan.Scripts.PlayerMovement
         [SerializeField] private bool toggleCrouch;
         [SerializeField] private float normalHeight;
         [SerializeField] private float crouchHeight;
+        [SerializeField] private float speedToCrouch;
         [SerializeField] private float slideHeight;
         [SerializeField] public float slideSpeedMulti;
         private float currentSlideSpeedMulti;
@@ -130,7 +131,7 @@ namespace Evan.Scripts.PlayerMovement
         
             //Set cc height [crouch]
             characterController.center = Vector3.down * (normalHeight - characterController.height) / 2.0f;
-            characterController.height = Mathf.Lerp(characterController.height, currentHeight, 0.05f);
+            characterController.height = Mathf.Lerp(characterController.height, currentHeight, speedToCrouch * Time.deltaTime);
             playerCamera.transform.localPosition = new Vector3(0f, characterController.center.y + characterController.height / 2, 0f) - cameraOffset;
         }
 

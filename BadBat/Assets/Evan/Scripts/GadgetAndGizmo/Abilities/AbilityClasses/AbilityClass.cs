@@ -17,6 +17,7 @@ public abstract class AbilityClass : MonoBehaviour
 	[HideInInspector] public GameObject player;
 	[HideInInspector] public GameObject gauntlet;
 	[HideInInspector] public GadgetAndGizmo myGag;
+	public AudioClip[] sfxClips;
 
 	public abstract void Equip(GameObject player, GameObject gauntlet, GadgetAndGizmo myGag);
 

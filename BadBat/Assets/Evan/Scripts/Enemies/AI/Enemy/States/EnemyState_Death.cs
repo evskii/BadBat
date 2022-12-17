@@ -8,6 +8,7 @@ public class EnemyState_Death : EnemyState
 	public override void Enter() {
 		enemy.navMeshAgent.ResetPath();
 		enemy.animController.SetTrigger("Death");
+		enemy.GetComponent<Collider>().enabled = false;
 		enemy.enabled = false;
 	}
 	
