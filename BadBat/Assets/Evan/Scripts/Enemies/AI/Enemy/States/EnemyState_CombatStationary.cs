@@ -35,7 +35,7 @@ public class EnemyState_CombatStationary : EnemyState
 	public int currentAmmo;
 	private bool reloading;
 	private Coroutine reloadCoroutine;
-
+	public AudioClip gunshotSFX;
 	public bool debugVisuals;
 	
 	public void InitCombat(GameObject combatGameObject, EnemyState currentState) {
@@ -98,7 +98,8 @@ public class EnemyState_CombatStationary : EnemyState
 		transform.LookAt(lookDir);
 		
 		enemy.animController.SetTrigger("Shoot");
-
+		enemy.PlaySFX(gunshotSFX);
+		
 		lastShotFired = Time.time;
 		currentAmmo--;
 

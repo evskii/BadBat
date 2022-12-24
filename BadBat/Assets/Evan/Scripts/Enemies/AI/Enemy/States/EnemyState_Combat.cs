@@ -26,6 +26,10 @@ public class EnemyState_Combat : EnemyState
 	// private Coroutine searchDelay;
 
 	//Weapon Variables
+	public AudioClip gunshotSFX;
+	// public GameObject gunShotParticle;
+	// public Transform muzzlePoint;
+		
 	private float lastShotFired = 0f;
 	public float shotDelay;
 	public float reloadTime;
@@ -110,7 +114,9 @@ public class EnemyState_Combat : EnemyState
 		transform.LookAt(lookDir);
 		
 		enemy.animController.SetTrigger("Shoot");
-
+		enemy.PlaySFX(gunshotSFX);
+		// Instantiate(gunShotParticle, muzzlePoint);
+		
 		lastShotFired = Time.time;
 		currentAmmo--;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DialogueCall : MonoBehaviour
 {
+    [TextArea]
     public string dialogue;
 
     public void SendNewDialogue() {

@@ -50,4 +50,6 @@ MonoBehaviour:
   player: {fileID: 0}
   gauntlet: {fileID: 0}
   myGag: {fileID: 0}
+  sfxClips: []
   projectileForce: 15
+  fireRate: 1.5

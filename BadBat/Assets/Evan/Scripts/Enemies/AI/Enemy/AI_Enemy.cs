@@ -32,6 +32,7 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 	[Header("Random References")]
 	public Transform enemyHead;
 	public LayerMask enemyLayer;
+	public AudioSource audioSource;
 
 	//States and other precarious behaviours
 	[Header("AI and State Machine Stuff")]
@@ -56,7 +57,8 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 		//Get References
 		navMeshAgent = GetComponent<NavMeshAgent>();
 		animController = GetComponent<Animator>();
-
+		audioSource = GetComponent<AudioSource>();
+		
 		//error checking
 		if (!myRoom) {
 			Debug.Log("<color=cyan> No Room set on enemy: </color>" + gameObject.name);
@@ -142,6 +144,11 @@ public class AI_Enemy : MonoBehaviour, IDamageable
 		
 		navMeshAgent.isStopped = false;
 		stunned = false;
+	}
+
+	public void PlaySFX(AudioClip toPlay) {
+		audioSource.clip = toPlay;
+		audioSource.Play();
 	}
 	
 	//--------------------- Handy AI Methods Effect --------------------------------------------------------------
